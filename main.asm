@@ -10,7 +10,7 @@
 ; maybe enemies added on later
 
 INCLUDE Irvine32.inc
-: adding constants to get map size and the display for stats the appear on the screen I'm going to keep the fixed layout so all further procedures are dependent on these constants
+; adding constants to get map size and the display for stats the appear on the screen I'm going to keep the fixed layout so all further procedures are dependent on these constants
 ; this defines the top left of the map and below determines the size of the playable area
 ; the INNER map is going to be in the playable area where items will spawn and players will be able to interact with them
 ; bekiw for BOTTOM determines the border parameters on the bottom edge to make a box 
