@@ -10,6 +10,44 @@
 ; maybe enemies added on later
 
 INCLUDE Irvine32.inc
+: adding constants to get map size and the display for stats the appear on the screen I'm going to keep the fixed layout so all further procedures are dependent on these constants
+; this defines the top left of the map and below determines the size of the playable area
+; the INNER map is going to be in the playable area where items will spawn and players will be able to interact with them
+; bekiw for BOTTOM determines the border parameters on the bottom edge to make a box 
+MAP_LEFT = 2
+MAP_TOP = 2
+MAPW = 68
+MAPH = 24
+
+INNER_LEFT = MAP_LEFT + 1
+INNER_TOP = MAP_TOP + 1
+MAP_RIGHT = MAP_LEFT + MAPW + 1
+MAP_BOTTOM = MAP_TOP + MAPH + 1
+
+HUD_LEFT = MAP_RIGHT + 4
+HUD_TOP = 2
+HUD_WIDTH = 28
+HUD_HEIGHT = 23
+HUD_RIGHT = HUD_LEFT + HUD_WIDTH - 1
+HUD_BOTTOM = HUD_TOP + HUD_HEIGHT
+
+; the display is set here and this will be where the display begins
+; the messages on the bottom row are listed and the ending text rows are listed as well
+HUD_TEXT_COL = HUD_LEFT + 2
+MSG_ROW = MAP_BOTTOM + 2
+END_ROW1 = MAP_BOTTOM + 4
+END_ROW2 = MAP_BOTTOM + 5
+
+; we are implimenting a limited inventory to make the game more challenging this sets the iventory size the types of items and the length of the day which is in WASD moves
+; below are the items ID that are used in an array
+MAX_ITEMS = 18
+MAX_INV = 6
+TURNS_PER_DAY = 10
+
+ITEM_NONE = 0
+ITEM_FOOD = 1
+ITEM_WATER = 2
+ITEM_MED = 3
 
 .data
 ; this is the title of the game and will show upon startup
