@@ -38,7 +38,7 @@ MSG_ROW = MAP_BOTTOM + 2
 END_ROW1 = MAP_BOTTOM + 4
 END_ROW2 = MAP_BOTTOM + 5
 
-; we are implimenting a limited inventory to make the game more challenging this sets the iventory size the types of items and the length of the day which is in WASD moves
+; we are implimenting a limited inventory to make the game more challenging this sets the inventory size the types of items and the length of the day which is in WASD moves
 ; below are the items ID that are used in an array
 MAX_ITEMS = 18
 MAX_INV = 6
@@ -55,6 +55,8 @@ titleStr BYTE "=== SURVIVAL ===",0
 
 ; this is just a feature that makes sure the program runs correctly
 startStr BYTE "Program initialized.",0
+
+
 .code
 main PROC
 ; this will clear the console so the screen is clean then will print the game title and startup 
@@ -73,5 +75,10 @@ main PROC
 
 	exit
 main ENDP
+
+; This procedure displays the updated inventory
+displayInv PROC
+
+displayInv ENDP
 
 END main
