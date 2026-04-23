@@ -104,16 +104,7 @@ game:
     ; if we got here, daytime is up and time to print new day message
     inc daycount
     mov tickstart, ecx
-    ; go to correct spot (top middle)
-    mov dh, 0
-    mov dl, 60
-    call GotoXY
-    ; Set text color to yellow on black background
-	mov eax, yellow + (black*16)
-	call SetTextColor 
-    ; load the string in eax then print
-    mov edx, OFFSET dayStr
-    call WriteString
+    call printDay
     ; also print the day number
     mov dh, 0
     mov dl, 64
@@ -146,6 +137,14 @@ debug ENDP
 
 printDay PROC
 
+    mov dh, 0 ; go to correct spot (top middle)
+    mov dl, 60
+    call GotoXY
+	mov eax, yellow + (black*16) ; Set text color to yellow on black background
+	call SetTextColor 
+    mov edx, OFFSET dayStr ; load the string in eax then print
+    call WriteString
+    ret
 printDay ENDP
 
 ; This procedure displays the updated inventory
