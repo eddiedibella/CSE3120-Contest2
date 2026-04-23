@@ -58,6 +58,9 @@ startStr BYTE "Program initialized.",0
 
 player BYTE 'o',0
 
+tickstart DWORD ?
+daytime DWORD ?
+
 .code
 main PROC
 ; this will clear the console so the screen is clean then will print the game title and startup 
@@ -74,6 +77,8 @@ main PROC
 
     call WaitMsg
 
+    mov daytime, 5000 ; time of day in ms
+
     call gameLoop
 
 	exit
@@ -83,12 +88,25 @@ main ENDP
 gameLoop PROC
 game:
     call GetTickCount
+    mov tickstart, eax
+    call debug ; remove when done
     ; get the input
 
 contgame:
     jmp game
 
 gameLoop ENDP
+
+debug PROC
+    push dx
+    mov dh, 4
+    mov dl, 0
+    call GotoXY
+    pop dx
+    call DumpRegs
+    
+    ret
+debug ENDP
 
 ; This procedure displays the updated inventory
 displayInv PROC
