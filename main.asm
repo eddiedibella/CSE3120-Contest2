@@ -64,6 +64,35 @@ player BYTE 'o',0
 tickstart DWORD ?
 daytime DWORD ?
 daycount DWORD 0h
+; below are the survival stats for the player of the game
+; as the player plays the game the intent is to update these values over time
+; for instance when the player will make a move or consume and item
+health      DWORD 100
+hunger      DWORD 100
+thirst      DWORD 100
+stamina     DWORD 100
+; main position for the player on the map
+; had an issue with the entire map clearing so this will redraw the cells instead of a clear
+playerX     DWORD 8
+playerY     DWORD 8
+oldPlayerX  DWORD 8
+oldPlayerY  DWORD 8
+; below are inventory counters and state flags for the game to recognize turns game over and exits
+; also includes active map storing with arrays and the intent is to use turnCount for day tracking
+foodInv     DWORD 0
+waterInv    DWORD 0
+medInv      DWORD 0
+quitFlag    DWORD 0
+deadFlag    DWORD 0
+turnCount   DWORD 0
+itemX       DWORD MAX_ITEMS DUP(0)
+itemY       DWORD MAX_ITEMS DUP(0)
+itemType    DWORD MAX_ITEMS DUP(0)
+itemActive  DWORD MAX_ITEMS DUP(0)
+
+; This is temp storage
+tempX       DWORD ?
+tempY       DWORD ?
 
 .code
 main PROC
