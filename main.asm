@@ -95,6 +95,7 @@ gameLoop PROC
 
 game:
     call GetTickCount
+    mov ecx, eax
     call debug ; remove when done
 
     sub eax, tickstart
@@ -102,9 +103,20 @@ game:
     jb sameday
     ; if we got here, daytime is up and time to print new day message
     inc daycount
-    mov tickstart, eax
-
-
+    mov tickstart, ecx
+    ; go to correct spot (top middle)
+    mov dh, 0
+    mov dl, 60
+    call GotoXY
+    ; load the string in eax then print
+    mov edx, OFFSET dayStr
+    call WriteString
+    ; also print the day number
+    mov dh, 0
+    mov dl, 64
+    call GotoXY
+    mov eax, daycount
+    call WriteDec
 sameday:
 
     ; get the input
