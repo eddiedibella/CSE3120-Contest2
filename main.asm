@@ -105,16 +105,6 @@ game:
     inc daycount
     mov tickstart, ecx
     call printDay
-    ; also print the day number
-    mov dh, 0
-    mov dl, 64
-    call GotoXY
-    mov eax, daycount
-    call WriteDec
-    ; reset text color
-    ; Set text color to white on black background
-	mov eax, white + (black*16)
-	call SetTextColor 
 sameday:
 
     ; get the input
@@ -144,6 +134,15 @@ printDay PROC
 	call SetTextColor 
     mov edx, OFFSET dayStr ; load the string in eax then print
     call WriteString
+    ; also print the day number
+    mov dh, 0
+    mov dl, 64
+    call GotoXY
+    mov eax, daycount
+    call WriteDec
+    ; reset text color
+	mov eax, white + (black*16) ; Set text color to white on black background
+	call SetTextColor 
     ret
 printDay ENDP
 
