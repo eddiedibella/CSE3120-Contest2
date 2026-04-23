@@ -56,6 +56,7 @@ titleStr BYTE "=== SURVIVAL ===",0
 ; this is just a feature that makes sure the program runs correctly
 startStr BYTE "Program initialized.",0
 
+player BYTE 'o',0
 
 .code
 main PROC
@@ -73,12 +74,27 @@ main PROC
 
     call WaitMsg
 
+    call gameLoop
+
 	exit
 main ENDP
+
+; The main game loop
+gameLoop PROC
+game:
+    call GetTickCount
+    ; get the input
+
+contgame:
+    jmp game
+
+gameLoop ENDP
 
 ; This procedure displays the updated inventory
 displayInv PROC
 
 displayInv ENDP
+
+
 
 END main
