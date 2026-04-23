@@ -56,10 +56,14 @@ titleStr BYTE "=== SURVIVAL ===",0
 ; this is just a feature that makes sure the program runs correctly
 startStr BYTE "Program initialized.",0
 
+; string to print the day (will be followed by the daycount)
+dayStr BYTE "Day ",0
+
 player BYTE 'o',0
 
 tickstart DWORD ?
 daytime DWORD ?
+daycount DWORD 0h
 
 .code
 main PROC
@@ -86,10 +90,23 @@ main ENDP
 
 ; The main game loop
 gameLoop PROC
-game:
     call GetTickCount
     mov tickstart, eax
+
+game:
+    call GetTickCount
     call debug ; remove when done
+
+    sub eax, tickstart
+    cmp eax, daytime
+    jb sameday
+    ; if we got here, daytime is up and time to print new day message
+    inc daycount
+    mov tickstart, eax
+
+
+sameday:
+
     ; get the input
 
 contgame:
