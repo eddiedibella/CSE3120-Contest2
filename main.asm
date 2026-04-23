@@ -108,6 +108,9 @@ game:
     mov dh, 0
     mov dl, 60
     call GotoXY
+    ; Set text color to yellow on black background
+	mov eax, yellow + (black*16)
+	call SetTextColor 
     ; load the string in eax then print
     mov edx, OFFSET dayStr
     call WriteString
@@ -117,6 +120,10 @@ game:
     call GotoXY
     mov eax, daycount
     call WriteDec
+    ; reset text color
+    ; Set text color to white on black background
+	mov eax, white + (black*16)
+	call SetTextColor 
 sameday:
 
     ; get the input
@@ -136,6 +143,10 @@ debug PROC
     
     ret
 debug ENDP
+
+printDay PROC
+
+printDay ENDP
 
 ; This procedure displays the updated inventory
 displayInv PROC
