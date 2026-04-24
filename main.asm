@@ -73,8 +73,8 @@ thirst      DWORD 100
 stamina     DWORD 100
 ; main position for the player on the map
 ; had an issue with the entire map clearing so this will redraw the cells instead of a clear
-playerX     DWORD 8
-playerY     DWORD 8
+playerX     BYTE 8
+playerY     BYTE 8
 oldPlayerX  DWORD 8
 oldPlayerY  DWORD 8
 ; below are inventory counters and state flags for the game to recognize turns game over and exits
@@ -89,6 +89,7 @@ itemX       DWORD MAX_ITEMS DUP(0)
 itemY       DWORD MAX_ITEMS DUP(0)
 itemType    DWORD MAX_ITEMS DUP(0)
 itemActive  DWORD MAX_ITEMS DUP(0)
+direction   DWORD 90
 
 ; This is temp storage
 tempX       DWORD ?
@@ -197,7 +198,19 @@ HandleInput PROC ; going to be responsible for handling keyboard inputs
     ret
 HandleInput ENDP
 
-InitGame PROC ; the initialization of the stats inventory item and position of the player
+InitGame PROC ; the initialization of the stats, inventory items, and position of the player
+    ; initialize position of player in the center of the screen
+    ; init direction to be right
+    mov direction, 90
+    ; move to row15, col60 and update corresponding variables
+    mov playerX, 60
+    mov playerY, 15
+    mov dx, 0
+    mov dl, playerX
+    mov dh, playerY
+    call GotoXY
+    mov al, player
+    call WriteChar
     ret
 InitGame ENDP
 
@@ -222,6 +235,7 @@ main PROC
 
     mov daytime, 5000 ; time of day in ms
 
+    call InitGame ; initialize the player, stats, and inventory items
     call gameLoop
 
 	exit
