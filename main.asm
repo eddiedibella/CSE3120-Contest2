@@ -163,6 +163,47 @@ DailyEvent ENDP
 AdvanceDay PROC ; stat loss and day to day updates will happen here
     ret
 AdvanceDay ENDP
+; same thing as before these are going to be the skeleton procs for the program
+; adding them in to avoid confusion
+AdvanceTurn PROC ; turn counter will determine length of day here
+    ret
+AdvanceTurn ENDP
+
+TryMove PROC ; will eventually move the player on the map
+    ret
+TryMove ENDP
+
+TryPickup PROC ; will be responsible for picking items up
+    ret
+TryPickup ENDP
+
+TryGather PROC ; want to add a gather feature along with a pickup feature when you are in a forested area it will be here
+    ret
+TryGather ENDP
+
+UseFood PROC ; for consuming food
+    ret
+UseFood ENDP
+
+UseWater PROC ; for consuming water
+    ret
+UseWater ENDP
+
+UseMedicine PROC ; for consuming medicine
+    ret
+UseMedicine ENDP
+
+HandleInput PROC ; going to be responsible for handling keyboard inputs
+    ret
+HandleInput ENDP
+
+InitGame PROC ; the initialization of the stats inventory item and position of the player
+    ret
+InitGame ENDP
+
+ShowEndScreen PROC ; the final result of each game will be held here
+    ret
+ShowEndScreen ENDP
 
 main PROC
 ; this will clear the console so the screen is clean then will print the game title and startup 
