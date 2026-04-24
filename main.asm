@@ -126,6 +126,43 @@ DrawBox ENDP
 DrawFrame PROC ; title and border
     ret
 DrawFrame ENDP
+; same thing as before these are going to be the skeleton procs for the program
+; adding them in to avoid confusion
+DrawMapCell PROC ; will draw the map with the terrain players and items included
+    ret
+DrawMapCell ENDP
+
+DrawTerrain PROC ; map terrain drawn at startup
+    ret
+DrawTerrain ENDP
+
+SpawnOneItem PROC ; will spawns one random item on a valid point
+    ret
+SpawnOneItem ENDP
+
+SpawnInitialItems PROC ; at startup this will initially spawn a random set of items
+    ret
+SpawnInitialItems ENDP
+
+DrawBar PROC ; responsible for hud drawing and status bars
+    ret
+DrawBar ENDP
+
+UpdateHUD PROC ; will update the display
+    ret
+UpdateHUD ENDP
+
+UpdateMessage PROC ; message line refresher
+    ret
+UpdateMessage ENDP
+
+DailyEvent PROC ; we want to impliment random daily events this is the placeholder for those
+    ret
+DailyEvent ENDP
+
+AdvanceDay PROC ; stat loss and day to day updates will happen here
+    ret
+AdvanceDay ENDP
 
 main PROC
 ; this will clear the console so the screen is clean then will print the game title and startup 
