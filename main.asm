@@ -95,6 +95,38 @@ tempX       DWORD ?
 tempY       DWORD ?
 
 .code
+
+; these are the starter procedure skeletons for the main game
+; going to keep filing them out one at a time just using them as placeholders for less confusion
+; these to start will be responsible for 
+Clamp100 PROC ; stat clamping to get a 0 to 100 range
+    ret
+Clamp100 ENDP
+
+GetInvTotal PROC ; inventory count totals and their final result
+    ret
+GetInvTotal ENDP
+
+MapToScreen PROC ; cooridnate converter
+    ret
+MapToScreen ENDP
+
+GetTerrainChar PROC ; adding in terrain features like trees and rivers this will determine where they appear
+    ret
+GetTerrainChar ENDP
+
+FindItemAt PROC ; finds an item if there is an active item in that position
+    ret
+FindItemAt ENDP
+
+DrawBox PROC ; border box
+    ret
+DrawBox ENDP
+
+DrawFrame PROC ; title and border
+    ret
+DrawFrame ENDP
+
 main PROC
 ; this will clear the console so the screen is clean then will print the game title and startup 
 ; WaitMSG pauses briefly so the window doesn't close immediately
