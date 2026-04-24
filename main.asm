@@ -56,6 +56,9 @@ titleStr BYTE "=== SURVIVAL ===",0
 ; this is just a feature that makes sure the program runs correctly
 startStr BYTE "Program initialized.",0
 
+; death message at the end
+deathStr BYTE "You have died.",0
+
 ; string to print the day (will be followed by the daycount)
 dayStr BYTE "Day ",0
 
@@ -215,6 +218,22 @@ InitGame PROC ; the initialization of the stats, inventory items, and position o
 InitGame ENDP
 
 ShowEndScreen PROC ; the final result of each game will be held here
+    ; clear the screen
+    call ClrScr
+    ; show the death message in the middle in red(row 15 col 60)
+    mov dx, 0
+    mov dl, 60
+    mov dh, 15
+    call GotoXY
+    mov eax, red + (black*16) ; Set text color to red on black background
+	call SetTextColor 
+    mov edx, OFFSET deathStr
+    call WriteString
+    ; (optional) show ending stats
+
+    ; reset color
+    mov eax, white + (black*16) ; Set text color to white on black background
+	call SetTextColor 
     ret
 ShowEndScreen ENDP
 
