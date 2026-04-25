@@ -129,7 +129,16 @@ GetInvTotal PROC ; inventory count totals and their final result
     ret
 GetInvTotal ENDP
 
-MapToScreen PROC ; cooridnate converter
+MapToScreen PROC ; cooridnate converter from map coords to screen coords
+	; EAX for map x and EBX for map y
+	; DH and DL will handle screen column and rows
+    ; Converts map coordinates into screen coordinates.
+    ; will shift coords in playable area rather than at the edge
+    add eax, INNER_LEFT
+    add ebx, INNER_TOP
+
+    mov dl, al
+    mov dh, bl
     ret
 MapToScreen ENDP
 
