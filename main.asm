@@ -104,6 +104,19 @@ tempY DWORD ?
 ; going to keep filing them out one at a time just using them as placeholders for less confusion
 ; these to start will be responsible for 
 Clamp100 PROC ; stat clamping to get a 0 to 100 range
+    ; this will clamp the value of stats from zero to 100 
+    ; this will force any value trying to go below zero to be 0
+    cmp eax, 0
+    jge clamp_hi
+    mov eax, 0
+    ret
+clamp_hi:
+    ; this will do the same thing but on the high end
+    cmp eax, 100
+    jle clamp_done
+    mov eax, 100
+
+clamp_done:
     ret
 Clamp100 ENDP
 
