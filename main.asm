@@ -121,6 +121,11 @@ clamp_done:
 Clamp100 ENDP
 
 GetInvTotal PROC ; inventory count totals and their final result
+	; will return the total count of items the player has
+ 	; the three categories we chose are food water and medicine as inventory items
+ 	mov eax, foodInv
+ 	add eax, waterInv
+ 	add eax, medInv
     ret
 GetInvTotal ENDP
 
