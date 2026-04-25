@@ -143,6 +143,66 @@ MapToScreen PROC ; cooridnate converter from map coords to screen coords
 MapToScreen ENDP
 
 GetTerrainChar PROC ; adding in terrain features like trees and rivers this will determine where they appear
+    ; this returns terrain characters for a single map locaation
+    ; below included forests and rivers that will be scattered around the map for player interactions
+    cmp eax, 48
+    jl checkForest1
+    cmp eax, 52
+    jg checkForest1
+    mov al, '~'
+    ret
+
+checkForest1: ; upper left forest
+    cmp eax, 6
+    jl checkForest2
+    cmp eax, 21
+    jg checkForest2
+    cmp ebx, 4
+    jl checkForest2
+    cmp ebx, 13
+    jg checkForest2
+    mov al, 'T'
+    ret
+
+checkForest2: ; forest upper middle
+    cmp eax, 28
+    jl checkForest3
+    cmp eax, 32
+    jg checkForest3
+    cmp ebx, 3
+    jl checkForest3
+    cmp ebx, 6
+    jg checkForest3
+    mov al, 'T'
+    ret
+
+checkForest3: ; small forest low middle
+    cmp eax, 36
+    jl checkForest4
+    cmp eax, 40
+    jg checkForest4
+    cmp ebx, 16
+    jl checkForest4
+    cmp ebx, 19
+    jg checkForest4
+    mov al, 'T'
+    ret
+
+checkForest4: ; small forest lower left
+    cmp eax, 12
+    jl notForest
+    cmp eax, 16
+    jg notForest
+    cmp ebx, 18
+    jl notForest
+    cmp ebx, 21
+    jg notForest
+    mov al, 'T'
+    ret
+
+notForest:
+    ;if there isnt a forest or river it defaults to plain ground 
+    mov al, '.'
     ret
 GetTerrainChar ENDP
 
