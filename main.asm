@@ -207,8 +207,49 @@ notForest:
 GetTerrainChar ENDP
 
 FindItemAt PROC ; finds an item if there is an active item in that position
+    ; will search item arrays for active items and eax will determine if an item is there 
+    ; if eax is -1 there is no active item
+
+    push ecx
+    push edx
+
+    mov ecx, 0
+
+find_loop:
+    cmp ecx, MAX_ITEMS
+    jge not_found
+
+    ; The following is supposed to check active item spots 
+    ; checking x and y coords 
+    ; and match if an active item is found
+    mov edx, itemActive[ecx*4]
+    cmp edx, 1
+    jne next_item
+
+    mov edx, itemX[ecx*4]
+    cmp edx, eax
+    jne next_item
+
+    mov edx, itemY[ecx*4]
+    cmp edx, ebx
+    jne next_item
+
+    mov eax, ecx
+    pop edx
+    pop ecx
+    ret
+
+next_item:
+    inc ecx
+    jmp find_loop
+
+not_found:
+    mov eax, -1
+    pop edx
+    pop ecx
     ret
 FindItemAt ENDP
+
 
 DrawBox PROC ; border box
     ret
