@@ -513,6 +513,14 @@ spawn_done:
 SpawnOneItem ENDP
 
 SpawnInitialItems PROC ; at startup this will initially spawn a random set of items
+    ; this will populate the map upon startup
+    ; so the game is not starting with no items these will be the initial day 1 items
+    mov ecx, 8
+spawn_loop:
+    push ecx
+    call SpawnOneItem
+    pop ecx
+    loop spawn_loop
     ret
 SpawnInitialItems ENDP
 
