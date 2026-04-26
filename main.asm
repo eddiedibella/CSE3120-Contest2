@@ -445,6 +445,39 @@ box_done:
 DrawMapCell ENDP
 
 DrawTerrain PROC ; map terrain drawn at startup
+    ; this will loop over the maps coords and draw tiles upon startup
+    ; it will start at the first row and col and stop after the last 
+
+    push eax
+    push ebx
+    push ecx
+    mov ebx, 0
+
+row_loop:
+    cmp ebx, MAPH
+    jge terrain_done
+    mov ecx, 0
+
+col_loop:
+    cmp ecx, MAPW
+    jge next_row
+    ; draws current tile and moves to the next col and row
+    ; Draw the current tile.
+    mov eax, ecx
+    push ebx
+    call DrawMapCell
+    pop ebx
+    inc ecx
+    jmp col_loop
+
+next_row:
+    inc ebx
+    jmp row_loop
+
+terrain_done:
+    pop ecx
+    pop ebx
+    pop eax
     ret
 DrawTerrain ENDP
 
