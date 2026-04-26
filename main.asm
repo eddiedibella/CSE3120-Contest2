@@ -574,6 +574,23 @@ UseMedicine PROC ; for consuming medicine
 UseMedicine ENDP
 
 HandleInput PROC ; going to be responsible for handling keyboard inputs
+    ; This first version only reads one key and supports quitting.
+    ; More controls will be added in later commits.
+
+    call ReadChar
+
+    ; Lowercase q quits the game.
+    cmp al, 'q'
+    je do_quit
+
+    ; Uppercase Q also quits the game.
+    cmp al, 'Q'
+    je do_quit
+
+    ret
+
+do_quit:
+    mov quitFlag, 1
     ret
 HandleInput ENDP
 
@@ -648,28 +665,33 @@ main ENDP
 
 ; The main game loop
 gameLoop PROC
+    ; records the startin tick count for the current day and checks how much time has passed since the start of the day
+    ; Record the starting tick count for the current day.
     call GetTickCount
     mov tickstart, eax
-
 game:
     call GetTickCount
     mov ecx, eax
-    call debug ; remove when done
-
+    call debug
     sub eax, tickstart
     cmp eax, daytime
     jb sameday
-    ; if we got here, daytime is up and time to print new day message
+    ; if the correct amount of time has passed a new day starts
     inc daycount
     mov tickstart, ecx
     call printDay
-sameday:
 
-    ; get the input
+sameday:
+    ; processes one input at a time and if the quitFlag is set the loop finished
+    call HandleInput
+    cmp quitFlag, 1
+    je done_game
 
 contgame:
     jmp game
 
+done_game:
+    ret
 gameLoop ENDP
 
 debug PROC
