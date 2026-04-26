@@ -383,23 +383,71 @@ DrawFrame ENDP
 ; adding them in to avoid confusion
 DrawMapCell PROC ; will draw the map with the terrain players and items included
 ; only implimenting drawing terrain cells for this commit that is the main goal below
+
     push eax
     push ebx
-    ; Converts map coords to screen coords
-    ; gets terrain type for cells
+    push ecx
+    push edx
+    push esi
+
+    ; Save original map coordinates for comparisons
+    mov ecx, eax
+    mov esi, ebx
+
+    ; converts map coords to screen coords
     call MapToScreen
     call GotoXY
-    pop ebx
-    pop eax
-    push eax
-    push ebx
+    ; if the tile is in the players position it draws the player first
+    cmp ecx, playerX
+    jne check_item
+    cmp esi, playerY
+    jne check_item
+
+    mov al, 'o'
+    call WriteChar
+    jmp cell_done
+check_item:
+    ; draws and item instead of terrain if there is an item that should exist at a specific tile
+    ; the type of item is determined by the symbol
+    mov eax, ecx
+    mov ebx, esi
+    call FindItemAt
+    cmp eax, -1
+    je draw_terrain
+
+    ; EAX will now hold the item index
+    mov edx, eax
+    mov eax, itemType[edx*4]
+
+    cmp eax, ITEM_FOOD
+    jne chk_water
+    mov al, 'f'
+    call WriteChar
+    jmp cell_done
+
+chk_water:
+    cmp eax, ITEM_WATER
+    jne chk_med
+    mov al, 'w'
+    call WriteChar
+    jmp cell_done
+
+chk_med:
+    mov al, 'm'
+    call WriteChar
+    jmp cell_done
+
+draw_terrain: ; draw terrain added so it will draw terrain if there are not items in the way 
+    mov eax, ecx
+    mov ebx, esi
     call GetTerrainChar
-    ; Forrests will be seen at T
+
     cmp al, 'T'
     jne chk_river
     mov al, 'T'
     call WriteChar
     jmp cell_done
+
 
 chk_river:
     ; river or water feature will be seen as ~
@@ -412,9 +460,11 @@ draw_plain:
     mov al, '.'
     call WriteChar
 cell_done:
+   pop esi
+    pop edx
+    pop ecx
     pop ebx
     pop eax
-	ret
 DrawMapCell ENDP
 
 DrawTerrain PROC ; map terrain drawn at startup
