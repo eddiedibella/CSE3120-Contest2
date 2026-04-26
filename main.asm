@@ -252,6 +252,96 @@ FindItemAt ENDP
 
 
 DrawBox PROC ; border box
+; will draw a rectangular boarder
+; EAX will be left col EBX is the top row ECX is width and EDX is height
+; going to be used later when the map is fully set up 
+    push eax
+    push ebx
+    push ecx
+    push edx
+    push esi
+    push edi
+    ; this will save coords
+    mov tempX, eax
+    mov tempY, ebx
+    mov esi, ecx
+    mov edi, edx
+
+    ; This is the top boarder
+    mov dl, BYTE PTR tempX
+    mov dh, BYTE PTR tempY
+    call GotoXY
+
+    mov ecx, esi
+top_loop:
+    mov al, '*'
+    call WriteChar
+    loop top_loop
+
+    ; this is the bottom border
+    mov eax, tempY
+    add eax, edi
+    dec eax
+    mov dh, al
+    mov dl, BYTE PTR tempX
+    call GotoXY
+
+    mov ecx, esi
+bottom_loop:
+    mov al, '*'
+    call WriteChar
+    loop bottom_loop
+
+    ; this is going to be responsible for drawing the left side
+    mov eax, tempY
+    inc eax
+left_loop:
+    mov ebx, tempY
+    add ebx, edi
+    dec ebx
+    cmp eax, ebx
+    jge right_border
+
+    mov dl, BYTE PTR tempX
+    mov dh, al
+    call GotoXY
+    mov al, '*'
+    call WriteChar
+
+    inc eax
+    jmp left_loop
+; for right border
+right_border:
+    mov eax, tempX
+    add eax, esi
+    dec eax
+    mov tempX, eax
+
+    mov eax, tempY
+    inc eax
+right_loop:
+    mov ebx, tempY
+    add ebx, edi
+    dec ebx
+    cmp eax, ebx
+    jge box_done
+
+    mov dl, BYTE PTR tempX
+    mov dh, al
+    call GotoXY
+    mov al, '*'
+    call WriteChar
+
+    inc eax
+    jmp right_loop
+
+box_done:
+    pop edi
+    pop esi
+    pop edx
+    pop ecx
+    pop ebx
+    pop eax
     ret
 DrawBox ENDP
 
