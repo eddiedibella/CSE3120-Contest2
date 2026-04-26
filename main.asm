@@ -581,15 +581,20 @@ InitGame PROC ; the initialization of the stats, inventory items, and position o
     ; initialize position of player in the center of the screen
     ; init direction to be right
     mov direction, 90
-    ; move to row15, col60 and update corresponding variables
+    ; sets the starting position for the player 
+    ; moves the cursor the the players start position
+    ; also will draw the character of the player
+    ; Set starting player position.
     mov playerX, 60
     mov playerY, 15
+    mov oldPlayerX, 60
+    mov oldPlayerY, 15
     mov eax, playerX
     mov dl, al
     mov eax, playerY
     mov dh, al
     call GotoXY
-    mov al, player
+    mov al, 'o'
     call WriteChar
     ret
 InitGame ENDP
@@ -631,6 +636,10 @@ main PROC
 
     mov daytime, 5000 ; time of day in ms
 
+    call DrawFrame
+    call DrawTerrain
+    call SpawnInitialItems
+    call DrawTerrain
     call InitGame ; initialize the player, stats, and inventory items
     call gameLoop
 
