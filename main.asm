@@ -351,97 +351,39 @@ DrawFrame ENDP
 ; same thing as before these are going to be the skeleton procs for the program
 ; adding them in to avoid confusion
 DrawMapCell PROC ; will draw the map with the terrain players and items included
-; will draw a rectangular boarder
-; EAX will be left col EBX is the top row ECX is width and EDX is height
-; going to be used later when the map is fully set up 
+; only implimenting drawing terrain cells for this commit that is the main goal below
     push eax
     push ebx
-    push ecx
-    push edx
-    push esi
-    push edi
-    ; this will save coords
-    mov tempX, eax
-    mov tempY, ebx
-    mov esi, ecx
-    mov edi, edx
-
-    ; This is the top boarder
-    mov dl, BYTE PTR tempX
-    mov dh, BYTE PTR tempY
+    ; Converts map coords to screen coords
+    ; gets terrain type for cells
+    call MapToScreen
     call GotoXY
-
-    mov ecx, esi
-top_loop:
-    mov al, '*'
-    call WriteChar
-    loop top_loop
-
-    ; this is the bottom border
-    mov eax, tempY
-    add eax, edi
-    dec eax
-    mov dh, al
-    mov dl, BYTE PTR tempX
-    call GotoXY
-
-    mov ecx, esi
-bottom_loop:
-    mov al, '*'
-    call WriteChar
-    loop bottom_loop
-
-    ; this is going to be responsible for drawing the left side
-    mov eax, tempY
-    inc eax
-left_loop:
-    mov ebx, tempY
-    add ebx, edi
-    dec ebx
-    cmp eax, ebx
-    jge right_border
-
-    mov dl, BYTE PTR tempX
-    mov dh, al
-    call GotoXY
-    mov al, '*'
-    call WriteChar
-
-    inc eax
-    jmp left_loop
-; for right border
-right_border:
-    mov eax, tempX
-    add eax, esi
-    dec eax
-    mov tempX, eax
-
-    mov eax, tempY
-    inc eax
-right_loop:
-    mov ebx, tempY
-    add ebx, edi
-    dec ebx
-    cmp eax, ebx
-    jge box_done
-
-    mov dl, BYTE PTR tempX
-    mov dh, al
-    call GotoXY
-    mov al, '*'
-    call WriteChar
-
-    inc eax
-    jmp right_loop
-
-box_done:
-    pop edi
-    pop esi
-    pop edx
-    pop ecx
     pop ebx
     pop eax
-    ret
+    push eax
+    push ebx
+    call GetTerrainChar
+    ; Forrests will be seen at T
+    cmp al, 'T'
+    jne chk_river
+    mov al, 'T'
+    call WriteChar
+    jmp cell_done
+
+chk_river:
+    ; river or water feature will be seen as ~
+    cmp al, '~'
+    jne draw_plain
+    mov al, '~'
+    call WriteChar
+    jmp cell_done
+draw_plain:
+    mov al, '.'
+    call WriteChar
+cell_done:
+    pop ebx
+    pop eax
+	ret
 DrawMapCell ENDP
 
 DrawTerrain PROC ; map terrain drawn at startup
