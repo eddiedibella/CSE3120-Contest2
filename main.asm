@@ -455,6 +455,60 @@ terrain_done:
 DrawTerrain ENDP
 
 SpawnOneItem PROC ; will spawns one random item on a valid point
+    ; finds an item spot that is free 
+    ; and will pick a random map coord
+    ; not allowed to place on a player spot
+    push eax
+    push ebx
+    push ecx
+    push esi
+    mov esi, 0
+find_slot:
+    cmp esi, MAX_ITEMS
+    jge spawn_done
+    cmp itemActive[esi*4], 0
+    je slot_found
+    inc esi
+    jmp find_slot
+
+slot_found:
+spawn_try: ; spawns on random map coord as stated above
+    mov eax, MAPW
+    call RandomRange
+    mov tempX, eax
+
+    mov eax, MAPH
+    call RandomRange
+    mov tempY, eax
+    ; cant place on top of a player
+    mov eax, tempX
+    cmp eax, playerX
+    jne check_overlap
+    mov eax, tempY
+    cmp eax, playerY
+    je spawn_try
+; cant place on a spot that with another item occupying it 
+check_overlap:
+    mov eax, tempX
+    mov ebx, tempY
+    call FindItemAt
+    cmp eax, -1
+    jne spawn_try
+    mov eax, 3
+    call RandomRange
+    inc eax
+    mov itemType[esi*4], eax
+    mov eax, tempX
+    mov itemX[esi*4], eax
+    mov eax, tempY
+    mov itemY[esi*4], eax
+    mov itemActive[esi*4], 1
+
+spawn_done:
+    pop esi
+    pop ecx
+    pop ebx
+    pop eax
     ret
 SpawnOneItem ENDP
 
