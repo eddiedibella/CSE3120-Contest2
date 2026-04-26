@@ -346,6 +346,37 @@ box_done:
 DrawBox ENDP
 
 DrawFrame PROC ; title and border
+; will draw the static layout of the map
+; clears the screen and adds borders for map and player display
+    push eax
+    push ebx
+    push ecx
+    push edx
+    call Clrscr
+    ; this draws the title and below draws border for map and display
+    mov dl, 2
+    mov dh, 0
+    call GotoXY
+    mov edx, OFFSET titleStr
+    call WriteString
+
+
+    mov eax, MAP_LEFT
+    mov ebx, MAP_TOP
+    mov ecx, MAPW + 2
+    mov edx, MAPH + 2
+    call DrawBox
+
+    mov eax, HUD_LEFT
+    mov ebx, HUD_TOP
+    mov ecx, HUD_WIDTH
+    mov edx, HUD_HEIGHT
+    call DrawBox
+
+    pop edx
+    pop ecx
+    pop ebx
+    pop eax
     ret
 DrawFrame ENDP
 ; same thing as before these are going to be the skeleton procs for the program
