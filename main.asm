@@ -611,6 +611,33 @@ DrawBar PROC ; responsible for hud drawing and status bars
     mov dl, HUD_TEXT_COL + 12
     mov dh, bl
     call GotoXY
+fill_loop:
+    cmp ecx, 0
+    je empty_setup
+    mov al, '*'
+    call WriteChar
+    dec ecx
+    jmp fill_loop
+empty_setup:
+    mov eax, esi
+    mov ebx, 10
+    xor edx, edx
+    div ebx
+    mov ecx, 10
+    sub ecx, eax
+empty_loop:
+    cmp ecx, 0
+    je bar_done
+    mov al, '-'
+    call WriteChar
+    dec ecx
+    jmp empty_loop
+bar_done:
+    pop esi
+    pop edx
+    pop ecx
+    pop ebx
+    pop eax
     ret
 DrawBar ENDP
 
