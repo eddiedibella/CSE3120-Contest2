@@ -714,19 +714,50 @@ UseMedicine ENDP
 HandleInput PROC ; going to be responsible for handling keyboard inputs
     ; This first version only reads one key and supports quitting.
     ; More controls will be added in later commits.
-
     call ReadChar
-
-    ; Lowercase q quits the game.
+    ; These qill be the keys set the quit the game
     cmp al, 'q'
     je do_quit
-
-    ; Uppercase Q also quits the game.
     cmp al, 'Q'
     je do_quit
-
+    ; These will be the movement keys
+    cmp al, 'w'
+    je move_up
+    cmp al, 'W'
+    je move_up
+    cmp al, 's'
+    je move_down
+    cmp al, 'S'
+    je move_down
+    cmp al, 'a'
+    je move_left
+    cmp al, 'A'
+    je move_left
+    cmp al, 'd'
+    je move_right
+    cmp al, 'D'
+    je move_right
     ret
-
+move_up:
+    mov eax, 0
+    mov ebx, -1
+    call TryMove
+    ret
+move_down:
+    mov eax, 0
+    mov ebx, 1
+    call TryMove
+    ret
+move_left:
+    mov eax, -1
+    mov ebx, 0
+    call TryMove
+    ret
+move_right:
+    mov eax, 1
+    mov ebx, 0
+    call TryMove
+    ret
 do_quit:
     mov quitFlag, 1
     ret
