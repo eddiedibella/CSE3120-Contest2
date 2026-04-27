@@ -646,6 +646,32 @@ bar_done:
 DrawBar ENDP
 
 UpdateHUD PROC ; will update the display
+    ; all will be shown on the right hand side of the screen
+    push eax
+    push edx
+    ; This is the health bar
+    mov eax, health
+    mov edx, OFFSET healthLbl
+    mov dh, HUD_TOP + 2
+    call DrawBar
+    ; This is the hunger bar
+    mov eax, hunger
+    mov edx, OFFSET hungerLbl
+    mov dh, HUD_TOP + 4
+    call DrawBar
+    ; This is the thirst bar
+    mov eax, thirst
+    mov edx, OFFSET thirstLbl
+    mov dh, HUD_TOP + 6
+    call DrawBar
+    ; finally this is the stamina bar
+    mov eax, stamina
+    mov edx, OFFSET stamLbl
+    mov dh, HUD_TOP + 8
+    call DrawBar
+
+    pop edx
+    pop eax
     ret
 UpdateHUD ENDP
 
