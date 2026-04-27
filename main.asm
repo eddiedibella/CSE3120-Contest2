@@ -643,6 +643,51 @@ AdvanceTurn PROC ; turn counter will determine length of day here
 AdvanceTurn ENDP
 
 TryMove PROC ; will eventually move the player on the map
+    ; saves old player positions and applies movement 
+    ; blocks any movement that would violate the border boundaries we have set
+
+    push ecx
+    push edx
+
+    mov ecx, playerX
+    mov edx, playerY
+    mov oldPlayerX, ecx
+    mov oldPlayerY, edx
+    add ecx, eax
+    add edx, ebx
+    cmp ecx, 0
+    jl blocked
+    cmp ecx, MAPW
+    jge blocked
+    cmp edx, 0
+    jl blocked
+    cmp edx, MAPH
+    jge blocked
+
+    ; gives a new position and redraws the old and new tiles 
+    mov playerX, ecx
+    mov playerY, edx
+
+    mov eax, oldPlayerX
+    mov ebx, oldPlayerY
+    call DrawMapCell
+
+    mov eax, playerX
+    mov ebx, playerY
+    call DrawMapCell
+
+    ; this is an u[pdate message
+    mov messagePtr, OFFSET msgMoved
+    call UpdateMessage
+    jmp move_done
+
+blocked:
+    mov messagePtr, OFFSET msgBlocked
+    call UpdateMessage
+
+move_done:
+    pop edx
+    pop ecx
     ret
 TryMove ENDP
 
