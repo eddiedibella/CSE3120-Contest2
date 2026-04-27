@@ -100,18 +100,20 @@ tempX DWORD ?
 tempY DWORD ?
 
 ; these are the possible messages that can appear on the bottom of the screen 
-msgMoved        BYTE "You moved.",0
-msgBlocked      BYTE "You cannot move there.",0
-msgPickFood     BYTE "Picked up food.",0
-msgPickWater    BYTE "Picked up water.",0
-msgPickMed      BYTE "Picked up medicine.",0
-msgNoItem       BYTE "No item on this tile.",0
-msgInvFull      BYTE "Inventory full.",0
-msgLabel        BYTE "Message: ",0
+msgMoved  BYTE "You moved.",0
+msgBlocked BYTE "You cannot move there.",0
+msgPickFood BYTE "Picked up food.",0
+msgPickWater BYTE "Picked up water.",0
+msgPickMed BYTE "Picked up medicine.",0
+msgNoItem BYTE "No item on this tile.",0
+msgInvFull BYTE "Inventory full.",0
+msgLabel BYTE "Message: ",0
 healthLbl BYTE "Health:",0
 hungerLbl BYTE "Hunger:",0
 thirstLbl BYTE "Thirst:",0
-stamLbl   BYTE "Stamina:",0
+stamLbl BYTE "Stamina:",0
+msgDrink BYTE "You drank water.",0
+msgNoWater BYTE "No water in inventory.",0
 
 .code
 
@@ -860,6 +862,32 @@ have_food:
 UseFood ENDP
 
 UseWater PROC ; for consuming water
+    push eax
+
+    ; if there is no food to be consumed it will do nothing
+    cmp waterInv, 0
+    jg have_water
+    mov messagePtr, OFFSET msgNoWater
+    call UpdateMessage
+    pop eax
+    ret
+
+have_water:
+    ; will remove exactly one item of food from the players inventory 
+    ; then it will restore the players hunger stat
+    dec waterInv
+    ; clamped to 100
+    mov eax, thirst
+    add eax, 30
+    call Clamp100
+    mov thirst, eax
+
+    ; refreshed the hud after the player consumes water
+    mov messagePtr, OFFSET msgDrink
+    call UpdateHUD
+    call UpdateMessage
+
+    pop eax
     ret
 UseWater ENDP
 
