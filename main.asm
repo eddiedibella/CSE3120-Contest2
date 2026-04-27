@@ -892,6 +892,26 @@ have_water:
 UseWater ENDP
 
 UseMedicine PROC ; for consuming medicine
+    push eax
+    cmp medInv, 0 ; if there is no meds to be consumed it will do nothing
+    jg have_meds
+    ; mov messagePtr, OFFSET msgNoMeds
+    call UpdateMessage
+    pop eax
+    ret
+have_meds:
+    ; will remove exactly one item of meds from the players inventory 
+    dec medInv
+    ; clamped to 100
+    mov eax, health
+    add eax, 30
+    call Clamp100
+    mov health, eax
+    ; refreshed the hud after the player consumes water
+    ; mov messagePtr, OFFSET msgMeds
+    call UpdateHUD
+    call UpdateMessage
+    pop eax
     ret
 UseMedicine ENDP
 
