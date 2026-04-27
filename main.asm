@@ -785,7 +785,7 @@ UpdateMessage PROC ; message line refresher
     mov dl, 2
     mov dh, MSG_ROW
     call GotoXY
-    mov ecx, 100
+    mov ecx, HUD_RIGHT
 
 clear_msg:
     mov al, ' '
