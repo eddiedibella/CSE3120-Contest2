@@ -587,6 +587,30 @@ spawn_loop:
 SpawnInitialItems ENDP
 
 DrawBar PROC ; responsible for hud drawing and status bars
+    ; EDX is the offset of the label string eax will give the stat value and dh is the row to be drawn
+    ; below saves the valur and raw and draws the label
+    push eax
+    push ebx
+    push ecx
+    push edx
+    push esi
+    mov esi, eax
+    mov bl, dh
+    mov dl, HUD_TEXT_COL
+    mov dh, bl
+    call GotoXY
+    call WriteString
+
+    ; computes the filled blocks out of 10 
+    ; and moves the bar
+    mov eax, esi
+    mov ebx, 10
+    xor edx, edx
+    div ebx
+    mov ecx, eax
+    mov dl, HUD_TEXT_COL + 12
+    mov dh, bl
+    call GotoXY
     ret
 DrawBar ENDP
 
