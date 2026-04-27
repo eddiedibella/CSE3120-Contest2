@@ -108,6 +108,10 @@ msgPickMed      BYTE "Picked up medicine.",0
 msgNoItem       BYTE "No item on this tile.",0
 msgInvFull      BYTE "Inventory full.",0
 msgLabel        BYTE "Message: ",0
+healthLbl BYTE "Health:",0
+hungerLbl BYTE "Hunger:",0
+thirstLbl BYTE "Thirst:",0
+stamLbl   BYTE "Stamina:",0
 
 .code
 
