@@ -410,30 +410,78 @@ DrawFrame PROC ; title and border
     push edx
     call Clrscr
     ; this draws the title and below draws border for map and display
-    mov dl, 2
-    mov dh, 0
-    call GotoXY
-    mov edx, OFFSET titleStr
-    call WriteString
-
-
-    mov eax, MAP_LEFT
-    mov ebx, MAP_TOP
-    mov ecx, MAPW + 2
-    mov edx, MAPH + 2
-    call DrawBox
-
-    mov eax, HUD_LEFT
-    mov ebx, HUD_TOP
-    mov ecx, HUD_WIDTH
-    mov edx, HUD_HEIGHT
-    call DrawBox
-
-    pop edx
-    pop ecx
-    pop ebx
-    pop eax
-    ret
+	 mov eax, yellow + (black * 16)
+	 call SetTextColor
+	
+	 ; this draws the title and below draws border for map and display
+	 mov dl, 2
+	 mov dh, 0
+	 call GotoXY
+	 mov edx, OFFSET titleStr
+	 call WriteString
+	
+	 mov eax, MAP_LEFT
+	 mov ebx, MAP_TOP
+	 mov ecx, MAPW + 2
+	 mov edx, MAPH + 2
+	 call DrawBox
+	
+	 mov eax, HUD_LEFT
+	 mov ebx, HUD_TOP
+	 mov ecx, HUD_WIDTH
+	 mov edx, HUD_HEIGHT
+	 call DrawBox
+	 ; hud labels And controls here
+	 mov eax, lightGray + (black * 16)
+	 call SetTextColor
+	
+	 mov dl, HUD_TEXT_COL
+	 mov dh, HUD_TOP + 1
+	 call GotoXY
+	 mov edx, OFFSET hudTitleStr
+	 call WriteString
+	
+	 mov dl, HUD_TEXT_COL
+	 mov dh, HUD_TOP + 15
+	 call GotoXY
+	 mov edx, OFFSET hudCtrlTitle
+	 call WriteString
+	
+	 mov dl, HUD_TEXT_COL
+	 mov dh, HUD_TOP + 16
+	 call GotoXY
+	 mov edx, OFFSET ctrl1Str
+	 call WriteString
+	
+	 mov dl, HUD_TEXT_COL
+	 mov dh, HUD_TOP + 17
+	 call GotoXY
+	 mov edx, OFFSET ctrl2Str
+	 call WriteString
+	
+	 mov dl, HUD_TEXT_COL
+	 mov dh, HUD_TOP + 18
+	 call GotoXY
+	 mov edx, OFFSET ctrl3Str
+	 call WriteString
+	
+	 mov dl, HUD_TEXT_COL
+	 mov dh, HUD_TOP + 19
+	 call GotoXY
+	 mov edx, OFFSET ctrl4Str
+	 call WriteString
+	
+	 mov dl, HUD_TEXT_COL
+	 mov dh, HUD_TOP + 20
+	 call GotoXY
+	 mov edx, OFFSET ctrl5Str
+	 call WriteString
+	
+	 pop edx
+	 pop ecx
+	 pop ebx
+	 pop eax
+	 ret
 DrawFrame ENDP
 ; same thing as before these are going to be the skeleton procs for the program
 ; adding them in to avoid confusion
@@ -1056,7 +1104,7 @@ InitGame PROC ; the initialization of the stats, inventory items, and position o
     mov deadFlag, 0
     mov turnCount, 0
     mov daycount, 1
-    mov messagePtr, OFFSET startStr
+    mov messagePtr, OFFSET msgStart
     ; clears item arrays
     mov ecx, 0
 clear_items:
