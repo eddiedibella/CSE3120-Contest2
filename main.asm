@@ -988,22 +988,44 @@ HandleInput ENDP
 InitGame PROC ; the initialization of the stats, inventory items, and position of the player
     ; initialize position of player in the center of the screen
     ; init direction to be right
-    mov direction, 90
     ; sets the starting position for the player 
     ; moves the cursor the the players start position
     ; also will draw the character of the player
     ; Set starting player position.
-    mov playerX, 60
-    mov playerY, 15
-    mov oldPlayerX, 60
-    mov oldPlayerY, 15
-    mov eax, playerX
-    mov dl, al
-    mov eax, playerY
-    mov dh, al
-    call GotoXY
-    mov al, 'o'
-    call WriteChar
+  call Randomize
+    ; resets players direction and the starting map position
+    mov direction, 90
+    mov playerX, 8
+    mov playerY, 8
+    mov oldPlayerX, 8
+    mov oldPlayerY, 8
+    ; resets stats
+    mov health, 100
+    mov hunger, 100
+    mov thirst, 100
+    mov stamina, 100
+    ; clears inventory and game flags
+    mov foodInv, 0
+    mov waterInv, 0
+    mov medInv, 0
+    mov quitFlag, 0
+    mov deadFlag, 0
+    mov turnCount, 0
+    mov daycount, 1
+    mov messagePtr, OFFSET startStr
+    ; clears item arrays
+    mov ecx, 0
+clear_items:
+    cmp ecx, MAX_ITEMS
+    jge init_done
+    mov itemActive[ecx*4], 0
+    mov itemType[ecx*4], 0
+    mov itemX[ecx*4], 0
+    mov itemY[ecx*4], 0
+    inc ecx
+    jmp clear_items
+
+init_done:
     ret
 InitGame ENDP
 
