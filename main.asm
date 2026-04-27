@@ -1030,30 +1030,20 @@ ShowEndScreen ENDP
 main PROC
 ; this will clear the console so the screen is clean then will print the game title and startup 
 ; WaitMSG pauses briefly so the window doesn't close immediately
-    call Clrscr
-
-    mov edx, OFFSET titleStr
-    call WriteString
-    call Crlf
-
-    mov edx, OFFSET startStr
-    call WriteString
-    call Crlf
-
-    call WaitMsg
-
-    mov daytime, 5000 ; time of day in ms
-
+    call InitGame  ; initialize the player, stats, and inventory items
     call DrawFrame
     call DrawTerrain
     call SpawnInitialItems
     call DrawTerrain
-    call InitGame ; initialize the player, stats, and inventory items
- 	call UpdateHUD
- 	call UpdateMessage
-    call gameLoop
+    call UpdateHUD
+    call UpdateMessage
 
-	exit
+    mov eax, playerX
+    mov ebx, playerY
+    call DrawMapCell
+
+    call gameLoop
+    exit
 main ENDP
 
 ; The main game loop
