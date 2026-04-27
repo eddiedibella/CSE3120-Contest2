@@ -88,6 +88,7 @@ medInv DWORD 0
 quitFlag DWORD 0
 deadFlag DWORD 0
 turnCount DWORD 0
+messagePtr DWORD OFFSET startStr
 itemX DWORD MAX_ITEMS DUP(0)
 itemY DWORD MAX_ITEMS DUP(0)
 itemType DWORD MAX_ITEMS DUP(0)
@@ -97,6 +98,16 @@ direction DWORD 90
 ; This is temp storage
 tempX DWORD ?
 tempY DWORD ?
+
+; these are the possible messages that can appear on the bottom of the screen 
+msgMoved        BYTE "You moved.",0
+msgBlocked      BYTE "You cannot move there.",0
+msgPickFood     BYTE "Picked up food.",0
+msgPickWater    BYTE "Picked up water.",0
+msgPickMed      BYTE "Picked up medicine.",0
+msgNoItem       BYTE "No item on this tile.",0
+msgInvFull      BYTE "Inventory full.",0
+msgLabel        BYTE "Message: ",0
 
 .code
 
@@ -584,6 +595,37 @@ UpdateHUD PROC ; will update the display
 UpdateHUD ENDP
 
 UpdateMessage PROC ; message line refresher
+    ; This will draw the message needed at the bottom of the screen 
+    ; Clears the row first so there are no text remaining when a new message pops up 
+
+    push eax
+    push ecx
+    push edx
+
+    ; responsible for clearing the message row
+    mov dl, 2
+    mov dh, MSG_ROW
+    call GotoXY
+    mov ecx, 100
+
+clear_msg:
+    mov al, ' '
+    call WriteChar
+    loop clear_msg
+
+    ; will print the message needed 
+    mov dl, 2
+    mov dh, MSG_ROW
+    call GotoXY
+    mov edx, OFFSET msgLabel
+    call WriteString
+
+    mov edx, messagePtr
+    call WriteString
+
+    pop edx
+    pop ecx
+    pop eax
     ret
 UpdateMessage ENDP
 
