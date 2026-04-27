@@ -795,6 +795,10 @@ HandleInput PROC ; going to be responsible for handling keyboard inputs
     je move_right
     cmp al, 'D'
     je move_right
+    cmp al, 'e'
+    je do_pickup
+    cmp al, 'E'
+    je do_pickup
     ret
 move_up:
     mov eax, 0
@@ -815,6 +819,9 @@ move_right:
     mov eax, 1
     mov ebx, 0
     call TryMove
+    ret
+do_pickup:
+    call TryPickup
     ret
 do_quit:
     mov quitFlag, 1
