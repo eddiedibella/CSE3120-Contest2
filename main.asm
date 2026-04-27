@@ -1004,7 +1004,6 @@ gameLoop PROC
 game:
     call GetTickCount
     mov ecx, eax
-    call debug
     sub eax, tickstart
     cmp eax, daytime
     jb sameday
@@ -1032,7 +1031,6 @@ debug PROC
     mov dl, 0
     call GotoXY
     pop dx
-    call DumpRegs
     
     ret
 debug ENDP
