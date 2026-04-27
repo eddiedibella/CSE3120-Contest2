@@ -115,6 +115,45 @@ stamLbl BYTE "Stamina:",0
 msgDrink BYTE "You drank water.",0
 msgNoWater BYTE "No water in inventory.",0
 
+; other possible messages that will also assist the hud 
+msgStart        BYTE "Survive as long as you can.",0
+msgEat          BYTE "You ate food.",0
+msgHeal         BYTE "You used medicine.",0
+msgNoFood       BYTE "No food in inventory.",0
+msgNoMed        BYTE "No medicine in inventory.",0
+msgRiverDrink   BYTE "You drank from the river.",0
+msgForestFood   BYTE "You found berries in the forest.",0
+msgForestFail   BYTE "You searched the forest and found nothing.",0
+msgNoGather     BYTE "Nothing to gather here.",0
+
+hudTitleStr     BYTE "STATUS",0
+hudCtrlTitle    BYTE "CONTROLS",0
+ctrl1Str        BYTE "WASD   - Move",0
+ctrl2Str        BYTE "E      - Pick Up",0
+ctrl3Str        BYTE "G      - Gather",0
+ctrl4Str        BYTE "F/R/M  - Use Item",0
+ctrl5Str        BYTE "Q      - Quit",0
+
+foodLbl         BYTE "Food Inv : ",0
+waterInvLbl     BYTE "Water Inv: ",0
+medLbl          BYTE "Med Inv  : ",0
+dayLbl          BYTE "Day   : ",0
+phaseLbl        BYTE "Phase : ",0
+turnLbl         BYTE "Turns : ",0
+phaseDayStr     BYTE "Day",0
+phaseNightStr   BYTE "Night",0
+
+evtHotDay       BYTE "Hot day! Extra water lost.",0
+evtColdNight    BYTE "Cold night! Extra stamina lost.",0
+evtLuckyFind    BYTE "Lucky day! Extra items appeared.",0
+evtShelter      BYTE "Found shelter. Small health gain.",0
+evtSpoiled      BYTE "Spoiled supplies. Lost 1 food.",0
+evtQuiet        BYTE "Quiet day. Nothing unusual happened.",0
+
+gameOverStr     BYTE "GAME OVER - press any key to exit.",0
+quitStr         BYTE "You quit - press any key to exit.",0
+finalDaysStr    BYTE "Days survived: ",0
+
 .code
 
 ; these are the starter procedure skeletons for the main game
