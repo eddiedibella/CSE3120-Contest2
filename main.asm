@@ -465,6 +465,7 @@ cell_done:
     pop ecx
     pop ebx
     pop eax
+	ret
 DrawMapCell ENDP
 
 DrawTerrain PROC ; map terrain drawn at startup
