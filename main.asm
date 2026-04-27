@@ -88,7 +88,7 @@ medInv DWORD 0
 quitFlag DWORD 0
 deadFlag DWORD 0
 turnCount DWORD 0
-messagePtr DWORD OFFSET startStr
+messagePtr DWORD OFFSET msgStart
 itemX DWORD MAX_ITEMS DUP(0)
 itemY DWORD MAX_ITEMS DUP(0)
 itemType DWORD MAX_ITEMS DUP(0)
