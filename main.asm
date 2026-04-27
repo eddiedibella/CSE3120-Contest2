@@ -839,6 +839,23 @@ TryGather PROC ; want to add a gather feature along with a pickup feature when y
 TryGather ENDP
 
 UseFood PROC ; for consuming food
+    push eax
+    ; if there is no food to be consumed it will do nothing
+    cmp foodInv, 0
+    jg have_food
+    ret
+have_food:
+    ; will remove exactly one item of food from hte players inventory 
+    ; then it will restore the players hunger stat
+    dec foodInv
+    mov eax, hunger
+    add eax, 25
+    call Clamp100
+    mov hunger, eax
+    ; refreshed the hud after the player consumes food
+    call UpdateHUD
+
+    pop eax
     ret
 UseFood ENDP
 
