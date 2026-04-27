@@ -593,7 +593,7 @@ spawn_loop:
 SpawnInitialItems ENDP
 
 DrawBar PROC ; responsible for hud drawing and status bars
-    ; EDX is the offset of the label string eax will give the stat value and dh is the row to be drawn
+    ; ECX is the offset of the label string, eax will give the stat value, and dh is the row to be drawn
     ; below saves the valur and raw and draws the label
     push eax
     push ebx
@@ -602,9 +602,12 @@ DrawBar PROC ; responsible for hud drawing and status bars
     push esi
     mov esi, eax
     mov bl, dh
+    push ebx ; push current row
     mov dl, HUD_TEXT_COL
     mov dh, bl
     call GotoXY
+
+    mov edx, ecx
     call WriteString
 
     ; computes the filled blocks out of 10 
@@ -615,6 +618,7 @@ DrawBar PROC ; responsible for hud drawing and status bars
     div ebx
     mov ecx, eax
     mov dl, HUD_TEXT_COL + 12
+    pop ebx ; pop current row
     mov dh, bl
     call GotoXY
 fill_loop:
@@ -653,22 +657,22 @@ UpdateHUD PROC ; will update the display
     push edx
     ; This is the health bar
     mov eax, health
-    mov edx, OFFSET healthLbl
+    mov ecx, OFFSET healthLbl
     mov dh, HUD_TOP + 2
     call DrawBar
     ; This is the hunger bar
     mov eax, hunger
-    mov edx, OFFSET hungerLbl
+    mov ecx, OFFSET hungerLbl
     mov dh, HUD_TOP + 4
     call DrawBar
     ; This is the thirst bar
     mov eax, thirst
-    mov edx, OFFSET thirstLbl
+    mov ecx, OFFSET thirstLbl
     mov dh, HUD_TOP + 6
     call DrawBar
     ; finally this is the stamina bar
     mov eax, stamina
-    mov edx, OFFSET stamLbl
+    mov ecx, OFFSET stamLbl
     mov dh, HUD_TOP + 8
     call DrawBar
 
