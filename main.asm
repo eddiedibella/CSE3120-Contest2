@@ -692,6 +692,64 @@ move_done:
 TryMove ENDP
 
 TryPickup PROC ; will be responsible for picking items up
+    push eax
+    push ebx
+    push esi
+
+    ; checks inventory total size
+    ; can_pick looks for an item at the current players location
+    call GetInvTotal
+    cmp eax, MAX_INV
+    jl can_pick
+    mov messagePtr, OFFSET msgInvFull
+    call UpdateMessage
+    jmp pickup_done
+
+can_pick:
+    mov eax, playerX
+    mov ebx, playerY
+    call FindItemAt
+    cmp eax, -1
+    jne found_item
+    mov messagePtr, OFFSET msgNoItem
+    call UpdateMessage
+    jmp pickup_done
+
+found_item:
+    mov esi, eax
+    mov eax, itemType[esi*4]
+
+    ; responsible for adding items to inventory at the correct inventory spot
+    cmp eax, ITEM_FOOD
+    jne pick_water
+    inc foodInv
+    mov messagePtr, OFFSET msgPickFood
+    jmp clear_item
+
+pick_water:
+    cmp eax, ITEM_WATER
+    jne pick_med
+    inc waterInv
+    mov messagePtr, OFFSET msgPickWater
+    jmp clear_item
+
+pick_med:
+    inc medInv
+    mov messagePtr, OFFSET msgPickMed
+
+clear_item:
+    ; once an item is picked up it is deactivated from the map
+    ; the tile is then redrawn with no item
+    mov itemActive[esi*4], 0
+    mov eax, playerX
+    mov ebx, playerY
+    call DrawMapCell
+    call UpdateMessage
+
+pickup_done:
+    pop esi
+    pop ebx
+    pop eax
     ret
 TryPickup ENDP
 
