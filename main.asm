@@ -568,6 +568,7 @@ SpawnOneItem PROC ; will spawns one random item on a valid point
     push eax
     push ebx
     push ecx
+	push edx
     push esi
     mov esi, 0
 find_slot:
@@ -610,9 +611,13 @@ check_overlap:
     mov eax, tempY
     mov itemY[esi*4], eax
     mov itemActive[esi*4], 1
+    mov eax, itemX[esi*4]
+    mov ebx, itemY[esi*4]
+    call DrawMapCell
 
 spawn_done:
     pop esi
+	pop edx
     pop ecx
     pop ebx
     pop eax
