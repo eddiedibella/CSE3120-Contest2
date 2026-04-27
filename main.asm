@@ -990,6 +990,8 @@ main PROC
     call SpawnInitialItems
     call DrawTerrain
     call InitGame ; initialize the player, stats, and inventory items
+ 	call UpdateHUD
+ 	call UpdateMessage
     call gameLoop
 
 	exit
