@@ -1201,9 +1201,6 @@ HandleInput PROC ; going to be responsible for handling keyboard inputs
     je move_right
     cmp al, 'D'
     je move_right
-    cmp al, 'e'
-    je do_pickup
-    cmp al, 'E'
     ; key used to pick up items
     cmp al, 'e'
     je do_pickup
