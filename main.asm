@@ -756,7 +756,31 @@ fill_loop:
     call WriteChar
     dec ecx
     jmp fill_loop
+empty_setup:
+    ; also computes value out of 10
+    mov eax, esi
+    mov ebx, 10
+    xor edx, edx
+    div ebx
+    mov ecx, 10
+    sub ecx, eax
 
+empty_loop:
+    cmp ecx, 0
+    je close_bar
+    mov al, '-'
+    call WriteChar
+    dec ecx
+    jmp empty_loop
+close_bar:
+    mov al, ']'
+    call WriteChar
+
+    pop esi
+    pop edxs
+    pop ecx
+    pop ebx
+    pop eax
     ret
 DrawBar ENDP
 
