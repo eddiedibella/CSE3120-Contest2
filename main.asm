@@ -689,59 +689,74 @@ SpawnInitialItems ENDP
 DrawBar PROC ; responsible for hud drawing and status bars
     ; ECX is the offset of the label string, eax will give the stat value, and dh is the row to be drawn
     ; below saves the valur and raw and draws the label
-    push eax
+push eax
     push ebx
     push ecx
     push edx
     push esi
+
+    ; will now save stat value and row number
     mov esi, eax
     mov bl, dh
-    push ebx ; push current row
+
+    ; draws the label string in the correct display coords
     mov dl, HUD_TEXT_COL
     mov dh, bl
     call GotoXY
-
-    mov edx, ecx
     call WriteString
 
-    ; computes the filled blocks out of 10 
-    ; and moves the bar
+    ; this colords the bars
+    mov eax, lightGray + (black * 16)
+    call SetTextColor
+    ; clears the value before updating
+    mov dl, HUD_TEXT_COL + 10
+    mov dh, bl
+    call GotoXY
+    mov al, ' '
+    call WriteChar
+    call WriteChar
+    call WriteChar
+    call WriteChar
+
+    ; writes a value for the display
+    mov eax, esi
+    mov dl, HUD_TEXT_COL + 10
+    mov dh, bl
+    call GotoXY
+    call WriteDec
+
+    ; this allows for old bars to be removed from the display as the game progresses
+    mov dl, HUD_TEXT_COL + 14
+    mov dh, bl
+    call GotoXY
+    mov ecx, 12
+clear_bar_area:
+    mov al, ' '
+    call WriteChar
+    loop clear_bar_area
+
+    ; draws opening bracket
+    mov dl, HUD_TEXT_COL + 14
+    mov dh, bl
+    call GotoXY
+    mov al, '['
+    call WriteChar
+
+    ; computes value out of 10
     mov eax, esi
     mov ebx, 10
     xor edx, edx
     div ebx
     mov ecx, eax
-    mov dl, HUD_TEXT_COL + 12
-    pop ebx ; pop current row
-    mov dh, bl
-    call GotoXY
+
 fill_loop:
     cmp ecx, 0
     je empty_setup
-    mov al, '*'
+    mov al, '#'
     call WriteChar
     dec ecx
     jmp fill_loop
-empty_setup:
-    mov eax, esi
-    mov ebx, 10
-    xor edx, edx
-    div ebx
-    mov ecx, 10
-    sub ecx, eax
-empty_loop:
-    cmp ecx, 0
-    je bar_done
-    mov al, '-'
-    call WriteChar
-    dec ecx
-    jmp empty_loop
-bar_done:
-    pop esi
-    pop edx
-    pop ecx
-    pop ebx
-    pop eax
+
     ret
 DrawBar ENDP
 
