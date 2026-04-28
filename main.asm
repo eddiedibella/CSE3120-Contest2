@@ -881,6 +881,46 @@ clear_phase:
     mov al, ' '
     call WriteChar
     loop clear_phase
+    mov dl, HUD_TEXT_COL + 8
+    mov dh, HUD_TOP + 13
+    call GotoXY
+    mov eax, daycount
+    and eax, 1
+    cmp eax, 1
+    jne showNight
+    mov edx, OFFSET phaseDayStr
+    call WriteString
+    jmp showTurns
+
+showNight:
+    mov edx, OFFSET phaseNightStr
+    call WriteString
+
+showTurns:
+    ; this shows turns remaining
+    ; this player feature adds ease of use and strategy for the player
+    mov dl, HUD_TEXT_COL
+    mov dh, HUD_TOP + 14
+    call GotoXY
+ mov edx, OFFSET turnLbl
+    call WriteString
+    mov dl, HUD_TEXT_COL + 8
+    mov dh, HUD_TOP + 14
+    call GotoXY
+    mov al, ' '
+    call WriteChar
+    call WriteChar
+    call WriteChar
+    mov dl, HUD_TEXT_COL + 8
+    mov dh, HUD_TOP + 14
+    call GotoXY
+    mov eax, TURNS_PER_DAY
+    sub eax, turnCount
+    call WriteDec
+
+    pop edx
+    pop ecx
+    pop eax
     ret
 UpdateHUD ENDP
 
