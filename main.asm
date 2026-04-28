@@ -801,6 +801,45 @@ UpdateHUD PROC ; will update the display
     call WriteChar
     mov dl, HUD_TEXT_COL + 11
     mov dh, HUD_TOP + 8
+	 call GotoXY
+	 mov eax, foodInv
+	 call WriteDec
+	
+	 ; this will be the water inventory 
+	 mov dl, HUD_TEXT_COL
+	 mov dh, HUD_TOP + 9
+	 call GotoXY
+	 mov edx, OFFSET waterInvLbl
+	 call WriteString
+	 mov dl, HUD_TEXT_COL + 11
+	 mov dh, HUD_TOP + 9
+	 call GotoXY
+	 mov al, ' '
+	 call WriteChar
+	 call WriteChar
+	 call WriteChar
+	 mov dl, HUD_TEXT_COL + 11
+	 mov dh, HUD_TOP + 9
+	
+	 call GotoXY
+	 mov eax, waterInv
+	 call WriteDec
+	
+	 ; this will be the Medicine inventory
+	 mov dl, HUD_TEXT_COL
+	 mov dh, HUD_TOP + 10
+	 call GotoXY
+	 mov edx, OFFSET medLbl
+	 call WriteString
+	 mov dl, HUD_TEXT_COL + 11
+	 mov dh, HUD_TOP + 10
+	 call GotoXY
+	 mov al, ' '
+	 call WriteChar
+	 call WriteChar
+	 call WriteChar
+	 mov dl, HUD_TEXT_COL + 11
+	 mov dh, HUD_TOP + 10
     ret
 UpdateHUD ENDP
 
