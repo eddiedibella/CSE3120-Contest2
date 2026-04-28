@@ -508,7 +508,8 @@ DrawMapCell PROC ; will draw the map with the terrain players and items included
     jne check_item
     cmp esi, playerY
     jne check_item
-
+    mov eax, white + (black * 16)
+    call SetTextColor
     mov al, 'o'
     call WriteChar
     jmp cell_done
@@ -527,6 +528,9 @@ check_item:
 
     cmp eax, ITEM_FOOD
     jne chk_water
+	; food will now be yellow
+    mov eax, yellow + (black * 16)
+    call SetTextColor
     mov al, 'f'
     call WriteChar
     jmp cell_done
@@ -534,11 +538,17 @@ check_item:
 chk_water:
     cmp eax, ITEM_WATER
     jne chk_med
+	; water will be blue
+	mov eax, lightCyan + (black * 16)
+	call SetTextColor
     mov al, 'w'
     call WriteChar
     jmp cell_done
 
 chk_med:
+    ; medicine will be purple
+    mov eax, lightMagenta + (black * 16)
+    call SetTextColor
     mov al, 'm'
     call WriteChar
     jmp cell_done
@@ -550,6 +560,9 @@ draw_terrain: ; draw terrain added so it will draw terrain if there are not item
 
     cmp al, 'T'
     jne chk_river
+    ; trees will now be the color green
+    mov eax, lightgreen + (black * 16)
+    call SetTextColor
     mov al, 'T'
     call WriteChar
     jmp cell_done
@@ -559,10 +572,15 @@ chk_river:
     ; river or water feature will be seen as ~
     cmp al, '~'
     jne draw_plain
+    mov eax, Cyan + (black * 16) ; river is now blue
+    call SetTextColor
     mov al, '~'
     call WriteChar
     jmp cell_done
 draw_plain:
+    mov al, '.'
+    mov eax, green + (black * 16) ; rest of terrain will be green
+    call SetTextColor
     mov al, '.'
     call WriteChar
 cell_done:
@@ -791,28 +809,28 @@ UpdateHUD PROC ; will update the display
     push ecx
     push edx
     ; This is the health bar
-    mov eax, red + (black * 16)
+    mov eax, lightred + (black * 16)
     call SetTextColor
     mov eax, health
     mov ecx, OFFSET healthLbl
     mov dh, HUD_TOP + 3
     call DrawBar
     ; This is the hunger bar
-    mov eax, lightRed + (black * 16)
+    mov eax, yellow + (black * 16)
     call SetTextColor
     mov eax, hunger
     mov ecx, OFFSET hungerLbl
     mov dh, HUD_TOP + 4
     call DrawBar
     ; This is the thirst bar
-    mov eax, lightBlue + (black * 16)
+    mov eax, lightCyan + (black * 16)
     call SetTextColor
     mov eax, thirst
     mov ecx, OFFSET thirstLbl
     mov dh, HUD_TOP + 5
     call DrawBar
     ; this will be the Stamina bar
-    mov eax, yellow + (black * 16)
+    mov eax, lightGreen + (black * 16)
     call SetTextColor
     mov eax, stamina
     mov ecx, OFFSET stamLbl
