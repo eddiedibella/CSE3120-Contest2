@@ -812,17 +812,13 @@ UpdateHUD PROC ; will update the display
     mov dh, HUD_TOP + 5
     call DrawBar
     ; this will be the Stamina bar
-    mov eax, stamina
-    mov ecx, OFFSET stamLbl
-    mov dh, HUD_TOP + 6
-    call DrawBar
-    ; finally this is the stamina bar
     mov eax, yellow + (black * 16)
     call SetTextColor
     mov eax, stamina
     mov ecx, OFFSET stamLbl
-    mov dh, HUD_TOP + 8
+    mov dh, HUD_TOP + 6
     call DrawBar
+    ; reset color
     mov eax, white + (black * 16)
     call SetTextColor
 
