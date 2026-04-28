@@ -801,45 +801,86 @@ UpdateHUD PROC ; will update the display
     call WriteChar
     mov dl, HUD_TEXT_COL + 11
     mov dh, HUD_TOP + 8
-	 call GotoXY
-	 mov eax, foodInv
-	 call WriteDec
+	call GotoXY
+	mov eax, foodInv
+	call WriteDec
 	
-	 ; this will be the water inventory 
-	 mov dl, HUD_TEXT_COL
-	 mov dh, HUD_TOP + 9
-	 call GotoXY
-	 mov edx, OFFSET waterInvLbl
-	 call WriteString
-	 mov dl, HUD_TEXT_COL + 11
-	 mov dh, HUD_TOP + 9
-	 call GotoXY
-	 mov al, ' '
-	 call WriteChar
-	 call WriteChar
-	 call WriteChar
-	 mov dl, HUD_TEXT_COL + 11
-	 mov dh, HUD_TOP + 9
+	; this will be the water inventory 
+	mov dl, HUD_TEXT_COL
+ 	mov dh, HUD_TOP + 9
+	call GotoXY
+	mov edx, OFFSET waterInvLbl
+	call WriteString
+	mov dl, HUD_TEXT_COL + 11
+	mov dh, HUD_TOP + 9
+	call GotoXY
+	mov al, ' '
+	call WriteChar
+	call WriteChar
+	call WriteChar
+	mov dl, HUD_TEXT_COL + 11
+	mov dh, HUD_TOP + 9
 	
-	 call GotoXY
-	 mov eax, waterInv
-	 call WriteDec
+	call GotoXY
+	mov eax, waterInv
+	call WriteDec
 	
-	 ; this will be the Medicine inventory
-	 mov dl, HUD_TEXT_COL
-	 mov dh, HUD_TOP + 10
-	 call GotoXY
-	 mov edx, OFFSET medLbl
-	 call WriteString
-	 mov dl, HUD_TEXT_COL + 11
-	 mov dh, HUD_TOP + 10
-	 call GotoXY
-	 mov al, ' '
-	 call WriteChar
-	 call WriteChar
-	 call WriteChar
-	 mov dl, HUD_TEXT_COL + 11
-	 mov dh, HUD_TOP + 10
+	; this will be the Medicine inventory
+	mov dl, HUD_TEXT_COL
+	mov dh, HUD_TOP + 10
+	call GotoXY
+	mov edx, OFFSET medLbl
+	call WriteString
+	mov dl, HUD_TEXT_COL + 11
+	mov dh, HUD_TOP + 10
+	call GotoXY
+	mov al, ' '
+	call WriteChar
+	call WriteChar
+	call WriteChar
+	mov dl, HUD_TEXT_COL + 11
+	mov dh, HUD_TOP + 10
+
+    call GotoXY
+    mov eax, medInv
+    call WriteDec
+
+    ; this will be the day counter
+    ; displayed for the player to see
+    mov dl, HUD_TEXT_COL
+    mov dh, HUD_TOP + 12
+    call GotoXY
+    mov edx, OFFSET dayLbl
+    call WriteString
+    mov dl, HUD_TEXT_COL + 8
+    mov dh, HUD_TOP + 12
+    call GotoXY
+    mov al, ' '
+    call WriteChar
+    call WriteChar
+    call WriteChar
+    mov dl, HUD_TEXT_COL + 8
+    mov dh, HUD_TOP + 12
+
+    call GotoXY
+    mov eax, daycount
+    call WriteDec
+
+    ; label and value for phase
+    mov dl, HUD_TEXT_COL
+    mov dh, HUD_TOP + 13
+    call GotoXY
+    mov edx, OFFSET phaseLbl
+    call WriteString
+    mov dl, HUD_TEXT_COL + 8
+    mov dh, HUD_TOP + 13
+    call GotoXY
+    mov ecx, 8
+
+clear_phase:
+    mov al, ' '
+    call WriteChar
+    loop clear_phase
     ret
 UpdateHUD ENDP
 
