@@ -1204,11 +1204,31 @@ HandleInput PROC ; going to be responsible for handling keyboard inputs
     cmp al, 'e'
     je do_pickup
     cmp al, 'E'
+    ; key used to pick up items
+    cmp al, 'e'
     je do_pickup
-   cmp al, 'f'
-   je do_food
-   cmp al, 'F'
-   je do_food
+    cmp al, 'E'
+    je do_pickup
+    ; gather command
+    cmp al, 'g'
+    je do_gather
+    cmp al, 'G'
+    je do_gather
+    ; eat food keys
+    cmp al, 'f'
+    je do_food
+    cmp al, 'F'
+    je do_food
+    ; drink water keys
+    cmp al, 'r'
+    je do_water
+    cmp al, 'R'
+    je do_water
+    ; use medicine keys
+    cmp al, 'm'
+    je do_med
+    cmp al, 'M'
+    je do_med
     ret
 move_up:
     mov eax, 0
@@ -1233,8 +1253,17 @@ move_right:
 do_food:
     call UseFood
     ret
+do_med:
+    call UseMedicine
+    ret
+do_water:
+    call UseWater
+    ret
 do_pickup:
     call TryPickup
+    ret
+do_gather:
+    call TryGather
     ret
 do_quit:
     mov quitFlag, 1
