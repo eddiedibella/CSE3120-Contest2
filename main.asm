@@ -777,7 +777,7 @@ close_bar:
     call WriteChar
 
     pop esi
-    pop edxs
+    pop edx
     pop ecx
     pop ebx
     pop eax
