@@ -990,18 +990,22 @@ TryMove PROC ; will eventually move the player on the map
     ; gives a new position and redraws the old and new tiles 
     mov playerX, ecx
     mov playerY, edx
-
+    ; mvement will cost stamina
+    mov eax, stamina
+    sub eax, 1
+    call Clamp100
+    mov stamina, eax
+    ; redraws old tile so it goes back to being terrain
     mov eax, oldPlayerX
     mov ebx, oldPlayerY
     call DrawMapCell
-
+    ; draws a player at its new location
     mov eax, playerX
     mov ebx, playerY
     call DrawMapCell
-
-    ; this is an u[pdate message
+    ; if the move is successful then the movement updates and the message also and it spends one turn 
     mov messagePtr, OFFSET msgMoved
-    call UpdateMessage
+    call AdvanceTurn
     jmp move_done
 
 blocked:
