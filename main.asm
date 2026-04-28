@@ -53,7 +53,7 @@ ITEM_MED = 3
 ; this is the title of the game and will show upon startup
 titleStr BYTE "=== SURVIVAL ===",0
 startPromptStr BYTE "Press any key to start the game...",0
-startHintStr   BYTE "Controls: WASD move, E pick up, G gather, F/R/M use items, Q quit",0
+startHintStr   BYTE "Controls: WASD move, E pick up, F/R/M use items, Q quit",0
 
 ; this is just a feature that makes sure the program runs correctly
 startStr BYTE "Program initialized.",0
@@ -132,9 +132,8 @@ hudTitleStr     BYTE "STATUS",0
 hudCtrlTitle    BYTE "CONTROLS",0
 ctrl1Str        BYTE "WASD   - Move",0
 ctrl2Str        BYTE "E      - Pick Up",0
-ctrl3Str        BYTE "G      - Gather",0
-ctrl4Str        BYTE "F/R/M  - Use Item",0
-ctrl5Str        BYTE "Q      - Quit",0
+ctrl3Str        BYTE "F/R/M  - Use Item",0
+ctrl4Str        BYTE "Q      - Quit",0
 
 foodLbl         BYTE "Food Inv : ",0
 waterInvLbl     BYTE "Water Inv: ",0
@@ -472,13 +471,7 @@ DrawFrame PROC ; title and border
 	 call GotoXY
 	 mov edx, OFFSET ctrl4Str
 	 call WriteString
-	
-	 mov dl, HUD_TEXT_COL
-	 mov dh, HUD_TOP + 20
-	 call GotoXY
-	 mov edx, OFFSET ctrl5Str
-	 call WriteString
-	
+
 	 pop edx
 	 pop ecx
 	 pop ebx
@@ -1287,10 +1280,6 @@ pickup_done:
     ret
 TryPickup ENDP
 
-TryGather PROC ; want to add a gather feature along with a pickup feature when you are in a forested area it will be here
-    ret
-TryGather ENDP
-
 UseFood PROC ; for consuming food
     push eax
     ; if there is no food to be consumed it will do nothing
@@ -1331,7 +1320,6 @@ UseWater PROC ; for consuming water
     cmp waterInv, 0
     jg have_water
     mov messagePtr, OFFSET msgNoWater
-    call UpdateMessage
     call UpdateMessage
     jmp done_water
 have_water:
@@ -1411,11 +1399,6 @@ HandleInput PROC ; going to be responsible for handling keyboard inputs
     je do_pickup
     cmp al, 'E'
     je do_pickup
-    ; gather command
-    cmp al, 'g'
-    je do_gather
-    cmp al, 'G'
-    je do_gather
     ; eat food keys
     cmp al, 'f'
     je do_food
@@ -1463,9 +1446,6 @@ do_water:
     ret
 do_pickup:
     call TryPickup
-    ret
-do_gather:
-    call TryGather
     ret
 do_quit:
     mov quitFlag, 1
