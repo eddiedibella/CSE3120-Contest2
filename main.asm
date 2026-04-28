@@ -949,6 +949,19 @@ AdvanceDay ENDP
 ; same thing as before these are going to be the skeleton procs for the program
 ; adding them in to avoid confusion
 AdvanceTurn PROC ; turn counter will determine length of day here
+    ; everytime there is a successful action by the player it is counted as a turn
+    ; this includes moving picking things up gathering or using items
+    inc turnCount
+    ; a new day is started when the turn counter has reached it's limit
+    ; a new day should begin
+    cmp turnCount, TURNS_PER_DAY
+    jl no_day_pass
+    call AdvanceDay
+no_day_pass:
+    ; after each turn that is completed the hud will be updated
+    ; and the bottom message will be refreshed
+    call UpdateHUD
+    call UpdateMessage
     ret
 AdvanceTurn ENDP
 
