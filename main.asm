@@ -891,6 +891,59 @@ AdvanceDay PROC ; stat loss and day to day updates will happen here
     sub eax, 8
     call Clamp100
     mov stamina, eax
+    ; if your hunger is now at a value of 0
+    ; your health with start to drop as well
+    cmp hunger, 0
+    jne chkThirst
+    mov eax, health
+    sub eax, 10
+    call Clamp100
+    mov health, eax
+
+chkThirst: 
+    ; if your thirst is now at a value of 0
+    ; your health with start to drop as well
+    cmp thirst, 0
+    jne chkStam
+    mov eax, health
+    sub eax, 10
+    call Clamp100
+    mov health, eax
+
+chkStam:
+    ; if your stamina is now at a value of 0
+    ; your health with start to drop as well
+    cmp stamina, 0
+    jne phase_effect
+    mov eax, health
+    sub eax, 5
+    call Clamp100
+    mov health, eax
+phase_effect:
+    ; keeps the day and night by seeing even numbers as night 
+    ; this will apply extra stamina loss
+    mov eax, daycount
+    and eax, 1
+    cmp eax, 0
+    jne spawn_and_event
+    mov eax, stamina
+    sub eax, 5
+    call Clamp100
+    mov stamina, eax
+spawn_and_event:
+    ; each day adds more items to the map
+    ; and also the random daily event is triggered
+    call SpawnOneItem
+    call SpawnOneItem
+    call DailyEvent
+    ; if the health of the player turns out to be zero
+    ; the player is dead
+    cmp health, 0
+    jne adv_done
+    mov deadFlag, 1
+
+adv_done:
+    pop eax
     ret
 AdvanceDay ENDP
 ; same thing as before these are going to be the skeleton procs for the program
