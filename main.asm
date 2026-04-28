@@ -1091,17 +1091,29 @@ UseFood PROC ; for consuming food
     ; if there is no food to be consumed it will do nothing
     cmp foodInv, 0
     jg have_food
-    ret
+    mov messagePtr, OFFSET msgNoFood
+    call UpdateMessage
+    jmp done_food
 have_food:
     ; will remove exactly one item of food from hte players inventory 
     ; then it will restore the players hunger stat
     dec foodInv
+    ; refreshed the hud after the player consumes food and restores hunger and stamina
+    ; eating restores hunger
     mov eax, hunger
     add eax, 25
     call Clamp100
     mov hunger, eax
-    ; refreshed the hud after the player consumes food
-    call UpdateHUD
+    ; eating also restores stamina
+    mov eax, stamina
+    add eax, 5
+    call Clamp100
+    mov stamina, eax
+    ; will also spend exactly one turn
+    mov messagePtr, OFFSET msgEat
+    call AdvanceTurn
+
+done_food:
 
     pop eax
     ret
@@ -1115,24 +1127,23 @@ UseWater PROC ; for consuming water
     jg have_water
     mov messagePtr, OFFSET msgNoWater
     call UpdateMessage
-    pop eax
-    ret
-
+    call UpdateMessage
+    jmp done_water
 have_water:
     ; will remove exactly one item of food from the players inventory 
     ; then it will restore the players hunger stat
     dec waterInv
     ; clamped to 100
+    ; refreshed the hud after the player consumes water
     mov eax, thirst
     add eax, 30
     call Clamp100
     mov thirst, eax
 
-    ; refreshed the hud after the player consumes water
+    ; drinking uses a turn in the finished game
     mov messagePtr, OFFSET msgDrink
-    call UpdateHUD
-    call UpdateMessage
-
+    call AdvanceTurn
+done_water:
     pop eax
     ret
 UseWater ENDP
@@ -1141,22 +1152,25 @@ UseMedicine PROC ; for consuming medicine
     push eax
     cmp medInv, 0 ; if there is no meds to be consumed it will do nothing
     jg have_meds
-    ; mov messagePtr, OFFSET msgNoMeds
+    mov messagePtr, OFFSET msgNoMed
     call UpdateMessage
-    pop eax
-    ret
+    jmp done_med
 have_meds:
     ; will remove exactly one item of meds from the players inventory 
     dec medInv
     ; clamped to 100
-    mov eax, health
-    add eax, 30
-    call Clamp100
-    mov health, eax
     ; refreshed the hud after the player consumes water
     ; mov messagePtr, OFFSET msgMeds
-    call UpdateHUD
-    call UpdateMessage
+    mov eax, health
+    add eax, 20
+    call Clamp100
+    mov health, eax
+
+    ; using medicine also costs a turn
+    mov messagePtr, OFFSET msgHeal
+    call AdvanceTurn
+done_med:
+
     pop eax
     ret
 UseMedicine ENDP
