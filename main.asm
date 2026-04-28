@@ -1062,12 +1062,14 @@ pick_med:
 
 clear_item:
     ; once an item is picked up it is deactivated from the map
-    ; the tile is then redrawn with no item
+    ; so it no longer appears in the item arrays
     mov itemActive[esi*4], 0
+    ; symbols will vanish now and the current til is redrawn
     mov eax, playerX
     mov ebx, playerY
     call DrawMapCell
-    call UpdateMessage
+    ; a pickup is an action and will cost a turn
+    call AdvanceTurn
 
 pickup_done:
     pop esi
