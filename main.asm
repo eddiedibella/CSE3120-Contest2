@@ -748,26 +748,32 @@ DrawBar ENDP
 UpdateHUD PROC ; will update the display
     ; all will be shown on the right hand side of the screen
     push eax
+    push ecx
     push edx
     ; This is the health bar
     mov eax, red + (black * 16)
     call SetTextColor
     mov eax, health
-    mov ecx, OFFSET healthLbl
-    mov dh, HUD_TOP + 2
+    mov edx, OFFSET healthLbl
+    mov dh, HUD_TOP + 3
     call DrawBar
     ; This is the hunger bar
     mov eax, lightRed + (black * 16)
     call SetTextColor
     mov eax, hunger
-    mov ecx, OFFSET hungerLbl
+    mov edx, OFFSET hungerLbl
     mov dh, HUD_TOP + 4
     call DrawBar
     ; This is the thirst bar
     mov eax, lightBlue + (black * 16)
     call SetTextColor
     mov eax, thirst
-    mov ecx, OFFSET thirstLbl
+    mov edx, OFFSET thirstLbl
+    mov dh, HUD_TOP + 5
+    call DrawBar
+    ; this will be the Stamina bar
+    mov eax, stamina
+    mov edx, OFFSET stamLbl
     mov dh, HUD_TOP + 6
     call DrawBar
     ; finally this is the stamina bar
@@ -780,8 +786,21 @@ UpdateHUD PROC ; will update the display
     mov eax, white + (black * 16)
     call SetTextColor
 
-    pop edx
-    pop eax
+    ; this will be the Food inventory
+    mov dl, HUD_TEXT_COL
+    mov dh, HUD_TOP + 8
+    call GotoXY
+    mov edx, OFFSET foodLbl
+    call WriteString
+    mov dl, HUD_TEXT_COL + 11
+    mov dh, HUD_TOP + 8
+    call GotoXY
+    mov al, ' '
+    call WriteChar
+    call WriteChar
+    call WriteChar
+    mov dl, HUD_TEXT_COL + 11
+    mov dh, HUD_TOP + 8
     ret
 UpdateHUD ENDP
 
@@ -1419,43 +1438,4 @@ still_alive:
 done_game:
     ret
 gameLoop ENDP
-
-debug PROC
-    push dx
-    mov dh, 4
-    mov dl, 0
-    call GotoXY
-    pop dx
-    
-    ret
-debug ENDP
-
-printDay PROC
-
-    mov dh, 0 ; go to correct spot (top middle)
-    mov dl, 60
-    call GotoXY
-	mov eax, yellow + (black*16) ; Set text color to yellow on black background
-	call SetTextColor 
-    mov edx, OFFSET dayStr ; load the string in eax then print
-    call WriteString
-    ; also print the day number
-    mov dh, 0
-    mov dl, 64
-    call GotoXY
-    mov eax, daycount
-    call WriteDec
-    ; reset text color
-	mov eax, white + (black*16) ; Set text color to white on black background
-	call SetTextColor 
-    ret
-printDay ENDP
-
-; This procedure displays the updated inventory
-displayInv PROC
-
-displayInv ENDP
-
-
-
 END main
