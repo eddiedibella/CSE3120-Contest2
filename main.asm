@@ -809,6 +809,63 @@ clear_msg:
 UpdateMessage ENDP
 
 DailyEvent PROC ; we want to impliment random daily events this is the placeholder for those
+    push eax
+
+    mov eax, 6
+    call RandomRange
+    ; I added this event so the player can lose extra water on some days
+    cmp eax, 0
+    jne evt1
+    mov eax, thirst
+    sub eax, 10
+    call Clamp100
+    mov thirst, eax
+    mov messagePtr, OFFSET evtHotDay
+    jmp evt_done
+; daily event 1 cold night you lose stamina 
+evt1:
+    cmp eax, 1
+    jne evt2
+    mov eax, stamina
+    sub eax, 10
+    call Clamp100
+    mov stamina, eax
+    mov messagePtr, OFFSET evtColdNight
+    jmp evt_done
+; daily event 2 luck makes more items spawn
+evt2:
+    cmp eax, 2
+    jne evt3
+    mov messagePtr, OFFSET evtLuckyFind
+    call SpawnOneItem
+    call SpawnOneItem
+    jmp evt_done
+; daily event 3 you found shelter 
+evt3:
+    cmp eax, 3
+    jne evt4
+    mov eax, health
+    add eax, 8
+    call Clamp100
+    mov health, eax
+    mov messagePtr, OFFSET evtShelter
+    jmp evt_done
+; daily event 4 food got spoiled inventory decreases
+evt4:
+    cmp eax, 4
+    jne evt5
+    cmp foodInv, 0
+    jle spoiled_done
+    dec foodInv
+spoiled_done:
+    mov messagePtr, OFFSET evtSpoiled
+    jmp evt_done
+; daily event 5 means everything quiet nothing is happening on this day 
+evt5:
+    mov messagePtr, OFFSET evtQuiet
+
+evt_done:
+    pop eax
     ret
 DailyEvent ENDP
 
