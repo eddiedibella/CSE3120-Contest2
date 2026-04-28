@@ -1409,43 +1409,4 @@ still_alive:
 done_game:
     ret
 gameLoop ENDP
-
-debug PROC
-    push dx
-    mov dh, 4
-    mov dl, 0
-    call GotoXY
-    pop dx
-    
-    ret
-debug ENDP
-
-printDay PROC
-
-    mov dh, 0 ; go to correct spot (top middle)
-    mov dl, 60
-    call GotoXY
-	mov eax, yellow + (black*16) ; Set text color to yellow on black background
-	call SetTextColor 
-    mov edx, OFFSET dayStr ; load the string in eax then print
-    call WriteString
-    ; also print the day number
-    mov dh, 0
-    mov dl, 64
-    call GotoXY
-    mov eax, daycount
-    call WriteDec
-    ; reset text color
-	mov eax, white + (black*16) ; Set text color to white on black background
-	call SetTextColor 
-    ret
-printDay ENDP
-
-; This procedure displays the updated inventory
-displayInv PROC
-
-displayInv ENDP
-
-
-
 END main
