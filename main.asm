@@ -703,6 +703,7 @@ push eax
     mov dl, HUD_TEXT_COL
     mov dh, bl
     call GotoXY
+    mov edx, ecx	
     call WriteString
 
     ; this colords the bars
