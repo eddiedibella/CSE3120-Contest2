@@ -52,6 +52,8 @@ ITEM_MED = 3
 .data
 ; this is the title of the game and will show upon startup
 titleStr BYTE "=== SURVIVAL ===",0
+startPromptStr BYTE "Press any key to start the game...",0
+startHintStr   BYTE "Controls: WASD move, E pick up, G gather, F/R/M use items, Q quit",0
 
 ; this is just a feature that makes sure the program runs correctly
 startStr BYTE "Program initialized.",0
@@ -1334,11 +1336,40 @@ ShowEndScreen ENDP
 main PROC
 ; this will clear the console so the screen is clean then will print the game title and startup 
 ; WaitMSG pauses briefly so the window doesn't close immediately
-    call InitGame  ; initialize the player, stats, and inventory items
+    call Clrscr ; clears the screen and shows title
+
+    mov eax, yellow + (black * 16)
+    call SetTextColor
+
+    mov dl, 25
+    mov dh, 10
+    call GotoXY
+    mov edx, OFFSET titleStr
+    call WriteString
+
+    ; there will also be some startup instruction added to the final version of the game
+    mov eax, lightGray + (black * 16)
+    call SetTextColor
+    mov dl, 18
+    mov dh, 12
+    call GotoXY
+    mov edx, OFFSET startPromptStr
+    call WriteString
+
+    mov dl, 5
+    mov dh, 14
+    call GotoXY
+    mov edx, OFFSET startHintStr
+    call WriteString
+
+    ; waits for a key to be pressed to start the game
+    call ReadChar
+
+    ; initializes the game state by calling procedures
+    call InitGame
     call DrawFrame
     call DrawTerrain
     call SpawnInitialItems
-    call DrawTerrain
     call UpdateHUD
     call UpdateMessage
 
@@ -1347,6 +1378,7 @@ main PROC
     call DrawMapCell
 
     call gameLoop
+    call ShowEndScreen
     exit
 main ENDP
 
