@@ -754,26 +754,26 @@ UpdateHUD PROC ; will update the display
     mov eax, red + (black * 16)
     call SetTextColor
     mov eax, health
-    mov edx, OFFSET healthLbl
+    mov ecx, OFFSET healthLbl
     mov dh, HUD_TOP + 3
     call DrawBar
     ; This is the hunger bar
     mov eax, lightRed + (black * 16)
     call SetTextColor
     mov eax, hunger
-    mov edx, OFFSET hungerLbl
+    mov ecx, OFFSET hungerLbl
     mov dh, HUD_TOP + 4
     call DrawBar
     ; This is the thirst bar
     mov eax, lightBlue + (black * 16)
     call SetTextColor
     mov eax, thirst
-    mov edx, OFFSET thirstLbl
+    mov ecx, OFFSET thirstLbl
     mov dh, HUD_TOP + 5
     call DrawBar
     ; this will be the Stamina bar
     mov eax, stamina
-    mov edx, OFFSET stamLbl
+    mov ecx, OFFSET stamLbl
     mov dh, HUD_TOP + 6
     call DrawBar
     ; finally this is the stamina bar
