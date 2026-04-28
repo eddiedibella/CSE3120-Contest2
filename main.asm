@@ -4,7 +4,7 @@
 	;- can pick up with E
 	;- consume with F
 ; food spawns randomly
-	;- to pick up food, you have to be in a specific radius to pick up with E
+	;- to pick up food, you have to stand on an item and pick up with E
 ; display health/hunger bar
 ; map can be the window thing we seen in class (the thing where only a portion of the map is visible at a time)
 ; maybe enemies added on later
@@ -124,9 +124,6 @@ msgHeal         BYTE "You used medicine.",0
 msgNoFood       BYTE "No food in inventory.",0
 msgNoMed        BYTE "No medicine in inventory.",0
 msgRiverDrink   BYTE "You drank from the river.",0
-msgForestFood   BYTE "You found berries in the forest.",0
-msgForestFail   BYTE "You searched the forest and found nothing.",0
-msgNoGather     BYTE "Nothing to gather here.",0
 
 hudTitleStr     BYTE "STATUS",0
 hudCtrlTitle    BYTE "CONTROLS",0
@@ -1300,7 +1297,7 @@ have_food:
     mov hunger, eax
     ; eating also restores stamina
     mov eax, stamina
-    add eax, 5
+    add eax, 15
     call Clamp100
     mov stamina, eax
     ; will also spend exactly one turn
