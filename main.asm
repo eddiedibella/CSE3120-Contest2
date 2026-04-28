@@ -765,6 +765,27 @@ UpdateHUD PROC ; will update the display
     mov edx, OFFSET thirstLbl
     mov dh, HUD_TOP + 5
     call DrawBar
+    ; this will be the Stamina bar
+    mov eax, stamina
+    mov edx, OFFSET stamLbl
+    mov dh, HUD_TOP + 6
+    call DrawBar
+
+    ; this will be the Food inventory
+    mov dl, HUD_TEXT_COL
+    mov dh, HUD_TOP + 8
+    call GotoXY
+    mov edx, OFFSET foodLbl
+    call WriteString
+    mov dl, HUD_TEXT_COL + 11
+    mov dh, HUD_TOP + 8
+    call GotoXY
+    mov al, ' '
+    call WriteChar
+    call WriteChar
+    call WriteChar
+    mov dl, HUD_TEXT_COL + 11
+    mov dh, HUD_TOP + 8
     ret
 UpdateHUD ENDP
 
