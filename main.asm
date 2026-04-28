@@ -870,6 +870,27 @@ evt_done:
 DailyEvent ENDP
 
 AdvanceDay PROC ; stat loss and day to day updates will happen here
+   push eax
+
+    ; the day will advance and the counter is reset 
+    inc daycount
+    mov turnCount, 0
+
+    ; each day stats are reduced below are the stats this is hunger
+    mov eax, hunger
+    sub eax, 12
+    call Clamp100
+    mov hunger, eax
+    ; each new day lowers thirst
+    mov eax, thirst
+    sub eax, 15
+    call Clamp100
+    mov thirst, eax
+    ; each new day will lower stamina
+    mov eax, stamina
+    sub eax, 8
+    call Clamp100
+    mov stamina, eax
     ret
 AdvanceDay ENDP
 ; same thing as before these are going to be the skeleton procs for the program
