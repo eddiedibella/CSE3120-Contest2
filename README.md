@@ -8,6 +8,6 @@ contest repository for CSE3120 game (second contest). Group members Eddie Di Bel
 - Debug -> Start Debugging to run the program
 
 ## GAMEPLAY INSTRUCTIONS
-- use W A S D to navigate the player around the map
-- use R to drink water, use F to eat food, use M to use medicine
-- use q to quit
+- Use W A S D to navigate the player around the map
+- Use R to drink water, use F to eat food, use M to use medicine
+- Use q to quit
