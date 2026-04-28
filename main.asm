@@ -1354,27 +1354,25 @@ main ENDP
 gameLoop PROC
     ; records the startin tick count for the current day and checks how much time has passed since the start of the day
     ; Record the starting tick count for the current day.
-    call GetTickCount
-    mov tickstart, eax
 game:
-    call GetTickCount
-    mov ecx, eax
-    sub eax, tickstart
-    cmp eax, daytime
-    jb sameday
-    ; if the correct amount of time has passed a new day starts
-    inc daycount
-    mov tickstart, ecx
-    call printDay
-
-sameday:
-    ; processes one input at a time and if the quitFlag is set the loop finished
-    call HandleInput
-    cmp quitFlag, 1
+    ; stop if a procedure marks the player dead
+    cmp deadFlag, 1
     je done_game
 
-contgame:
+    ; this is going to be used as a backup dead check
+    cmp health, 0
+    jg still_alive
+    mov deadFlag, 1
+    jmp done_game
+
+still_alive:
+    ; if a player quits the game then the game stops
+    cmp quitFlag, 1
+    je done_game
+    ; processes one key input and continues looping
+    call HandleInput
     jmp game
+
 
 done_game:
     ret
