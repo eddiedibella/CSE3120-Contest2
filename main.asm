@@ -1493,23 +1493,38 @@ init_done:
     ret
 InitGame ENDP
 
-ShowEndScreen PROC ; the final result of each game will be held here
-    ; clear the screen
-    call ClrScr
-    ; show the death message in the middle in red(row 15 col 60)
-    mov dx, 0
-    mov dl, 60
-    mov dh, 15
-    call GotoXY
-    mov eax, red + (black*16) ; Set text color to red on black background
-	call SetTextColor 
-    mov edx, OFFSET deathStr
-    call WriteString
-    ; (optional) show ending stats
+ShowEndScreen PROC
+    call Clrscr
 
-    ; reset color
-    mov eax, white + (black*16) ; Set text color to white on black background
-	call SetTextColor 
+    ; Choose the ending message based on how the game ended.
+    cmp quitFlag, 1
+    je show_quit_message
+
+    mov eax, lightRed + (black * 16)
+    call SetTextColor
+    mov edx, OFFSET gameOverStr
+    jmp print_end_message
+
+show_quit_message:
+    mov eax, yellow + (black * 16)
+    call SetTextColor
+    mov edx, OFFSET quitStr
+
+print_end_message:
+    call WriteString
+    call Crlf
+
+    ; Display the day reached when the game ended.
+    mov eax, white + (black * 16)
+    call SetTextColor
+    mov edx, OFFSET dayLbl
+    call WriteString
+    mov eax, daycount
+    call WriteDec
+    call Crlf
+
+    ; Keep the ending screen visible until a key is pressed.
+    call ReadChar
     ret
 ShowEndScreen ENDP
 
